@@ -1,52 +1,70 @@
 // Weight.ts
 // Psuedo class reference => constants here can be used using `import * as Weight from './Weight';`
+
+// Heterogeneous characteristic weights
 export const GENDER = 1;
 export const MAJOR = 1;
-export const DOER_PLANNER = 1;
-export const ADAPTABILITY = 1;
-export const COMMS_PROFESSIONAL = 1;
-export const COMMS_GROUP = 1;
-export const PROJECT_PREF = 1;
-export const EXPLORE = 1;
+export const ADAPT_COMFORT = 1;
+export const COMMS_STYLE_PREF = 1;
+export const COMMS_INITIATE_COMFORT = 1;
+export const COMMS_INITIATE_CONSISTENCY = 1;
+export const MANAGE_MISTAKE = 1;
 export const MANAGE_CONFLICT = 1;
 
+// Homogeneous characteristic weights
 export const FEEDBACK_GIVE = 1;
-export const FEEDBACK_GET = 1;
+export const FEEDBACK_RECEIVE = 1;
 export const BIRD_OWL = 1;
 export const MEETING_TIME = 1;
+export const DOER_PLANNER = 1;
+export const MANAGE_DEADLINE = 1;
 export const WORK_CONSISTENCY = 1;
+export const WORK_COMMITMENT = 1;
 export const MEETING_LOCATION = 1;
-export const MEETING_OCCURENCE = 1;
+export const MEETING_CONSISTENCY = 1;
+export const COMMS_EFFECTIVE_IMPT = 1;
+export const PROJECT_PREF = 1;
+export const EXPLORE = 1;
 
+// Must contain all heterogeneous characteristics to be used for fitness calculation
 export const heteroWeights: number[] = [
     GENDER,
     MAJOR,
-    DOER_PLANNER,
-    ADAPTABILITY,
-    COMMS_PROFESSIONAL,
-    COMMS_GROUP,
-    PROJECT_PREF,
-    EXPLORE,
+    ADAPT_COMFORT,
+    COMMS_STYLE_PREF,
+    COMMS_INITIATE_COMFORT,
+    COMMS_INITIATE_CONSISTENCY,
+    MANAGE_MISTAKE,
     MANAGE_CONFLICT,
 ];
 export const heteroWeightSum: number = heteroWeights.reduce((sum, weight) => sum + weight, 0);
 export const HETERO_TOTAL_COUNT: number = heteroWeights.length;
 
+// Must contain all homogeneous characteristics to be used for fitness calculation
 export const homoWeights: number[] = [
     FEEDBACK_GIVE,
-    FEEDBACK_GET,
+    FEEDBACK_RECEIVE,
     BIRD_OWL,
     MEETING_TIME,
+    DOER_PLANNER,
+    MANAGE_DEADLINE,
     WORK_CONSISTENCY,
+    WORK_COMMITMENT,
     MEETING_LOCATION,
-    MEETING_OCCURENCE,
+    MEETING_CONSISTENCY,
+    COMMS_EFFECTIVE_IMPT,
+    PROJECT_PREF,
+    EXPLORE,
 ];
+
 export const homoWeightSum: number = homoWeights.reduce((sum, weight) => sum + weight, 0);
 export const HOMO_TOTAL_COUNT: number = homoWeights.length;
 
+// Weights of fHetero and fHomo, sum is 1
 export const WEIGHT_HETEROGENEOUS = 0.5;
 export const WEIGHT_HOMOGENEOUS = 1 - WEIGHT_HETEROGENEOUS;
 
+// Weights of fMix, fBal, fDist, fPref
 export const WEIGHT_MIX = 2;
 export const WEIGHT_BALANCE = 2;
 export const WEIGHT_DISTRIBUTION = 0;

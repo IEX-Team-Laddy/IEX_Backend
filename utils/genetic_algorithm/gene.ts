@@ -13,13 +13,14 @@ export default class Gene {
     private fitness: number;
     private length: number;
 
-    constructor(gene: Person[], length: number);
+    constructor(gene: Person[], length: number, fitness: number);
     constructor(length: number);
-    constructor(geneOrLength: Person[] | number, length?: number) {
+
+    constructor(geneOrLength: Person[] | number, length?: number, fitness?: number) {
         if (Array.isArray(geneOrLength)) {
             this.gene = geneOrLength;
             this.length = length!;
-            this.fitness = Gene.calculateFitness(this.gene);
+            this.fitness = fitness!;
         } else {
             this.gene = Gene.getShuffledBase();
             this.length = geneOrLength;
@@ -30,11 +31,11 @@ export default class Gene {
     public static setBaseInfo(
         geneLength: number,
         groupNo: number,
-        customGene: Person[],
+        startingGene: Person[],
         aggregate: number[],
         distribute: number[]
     ): void {
-        Gene.baseGene = customGene || Person.createPeople(geneLength);
+        Gene.baseGene = startingGene;
         aggregate.forEach((person) => Gene.aggregatedPersons.add(person));
         distribute.forEach((person) => Gene.distributedPersons.add(person));
 
@@ -141,9 +142,13 @@ export default class Gene {
                 child[i] = value;
             }
         }
-        return new Gene(child, this.length);
+        return new Gene(child, this.length, Gene.calculateFitness(child));
     }
 
+
+    // For the current prototype we will impose the condition that the result of mutateSwap must be fitter than the input.
+    // This will mean the algorithm for now tends towards the local optima rather than search for a global optima, at least until we can improve the way each generation is created and stored.
+    // TODO: add result > input limitation
     public mutateSwap(index1: number, index2: number): Gene {
         [this.gene[index1], this.gene[index2]] = [this.gene[index2], this.gene[index1]];
         return this;
@@ -159,8 +164,9 @@ export default class Gene {
             left++;
             right--;
         }
-        return Gene.calculateFitness(result) > this.getFitness()
-            ? new Gene(result, this.length)
+        const resultFitness: number = Gene.calculateFitness(result);
+        return resultFitness > this.getFitness()
+            ? new Gene(result, this.length, resultFitness)
             : this;
     }
 
@@ -172,6 +178,7 @@ export default class Gene {
         return this.gene.map((person) => person.toString()).join(" ");
     }
 
+    // TODO: change output from a console log -> store data in db or smthg
     public printAsGroup(): void {
         console.log(`Fitness: ${this.fitness}`);
         for (let i = 0; i < Gene.groupIndex.length; i++) {

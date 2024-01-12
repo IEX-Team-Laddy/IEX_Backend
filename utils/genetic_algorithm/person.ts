@@ -7,20 +7,14 @@ export class Person {
 
     private readonly id: number;
     private readonly preferences: number[]; // Assuming preferences are stored as an array of numbers (IDs)
-    private readonly heterogeneous: number[];
-    private readonly homogeneous: number[];
+    private readonly heterogeneous: number[]; // Heterogeneous characteristic values in order as defined in weight.ts
+    private readonly homogeneous: number[]; // Same as above but for Homogeneous characteristics
 
-    public constructor();
-    public constructor(pref: number[], hetero: number[], homo: number[]);
-    public constructor(pref?: number[], hetero?: number[], homo?: number[]) {
+    public constructor(pref: number[], hetero: number[], homo: number[]) {
         this.id = Person.globalId++;
-        this.preferences = pref || [];
-        this.heterogeneous = hetero || Person.randomCharacteristics(Weight.heteroWeights.length);
-        this.homogeneous = homo || Person.randomCharacteristics(Weight.homoWeights.length);
-    }
-
-    public static createPeople(length: number): Person[] {
-        return Array.from({ length }, () => new Person());
+        this.preferences = pref;
+        this.heterogeneous = hetero;
+        this.homogeneous = homo;
     }
 
     public static calcSimilarity(pair1: Person, pair2: Person): number {
@@ -67,10 +61,6 @@ export class Person {
 
     public toString(): string {
         return this.id.toString();
-    }
-
-    private static randomCharacteristics(count: number): number[] {
-        return Array.from({ length: count }, () => Math.random());
     }
 
     public getHeterogeneous(): number[] {

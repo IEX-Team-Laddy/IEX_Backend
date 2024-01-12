@@ -10,7 +10,7 @@ class Main {
     static GENE_LENGTH = 35;
     static GROUP_NUMBER = 7;
     static GENERATION_COUNT = 1000;
-    static FITNESS_LIMIT = 1.692;
+    static FITNESS_LIMIT = 1000;
     static GENERATION_GAP = 0.9;
     static OFFSPRING_COUNT = Main.getOffspringCount();
     static CROSSOVER_PROBABILITY = 0.9;
@@ -24,129 +24,15 @@ class Main {
     static createCustomGene(): Person[] {
         const custom: Person[] = new Array(Main.GENE_LENGTH);
 
-        custom[0] = new Person(
-            [],
-            [0, 0, 0.25, 0.75, 1.0, 1.0, 1.0, 1.0, 1.0],
-            [0.0, 0.0, 0, 0, 1, 0.0, 0.0]
-        );
-        custom[1] = new Person(
-            [],
-            [0, 0, 0.25, 0.75, 1.0, 1.0, 1.0, 0.75, 1.0],
-            [0.33, 1.0, 1, 1, 1, 0.0, 0.5]
-        );
-        custom[2] = new Person(
-            [],
-            [0, 1, 0.75, 0.25, 0.5, 0.75, 0.25, 0.75, 0.75],
-            [0.67, 1.0, 1, 1, 0, 0.5, 0.25]
-        );
-        custom[3] = new Person(
-            [],
-            [1, 1, 0.5, 0.25, 1.0, 1.0, 0.0, 0.5, 0.75],
-            [0.33, 0.33, 1, 0, 1, 0.5, 0.25]
-        );
-        custom[4] = new Person(
-            [],
-            [0, 0, 0.75, 0.5, 0.5, 0.75, 0.75, 0.75, 0.5],
-            [0.67, 1.0, 0, 1, 1, 0.5, 0.25]
-        );
-
-        custom[5] = new Person(
-            [],
-            [0, 0, 0.5, 0.25, 0.75, 0.75, 0.75, 0.75, 0.5],
-            [1.0, 0.33, 1, 1, 0, 0.0, 0.25]
-        );
-        custom[6] = new Person(
-            [],
-            [0, 0, 0.25, 0.75, 0.5, 1.0, 0.0, 0.75, 1.0],
-            [1.0, 1.0, 1, 1, 1, 0.5, 0.0]
-        );
-        custom[7] = new Person(
-            [],
-            [0, 0, 0.0, 0.25, 0.75, 0.75, 0.0, 0.75, 0.75],
-            [0.0, 0.0, 1, 1, 0, 1.0, 0.0]
-        );
-        custom[8] = new Person(
-            [],
-            [0, 1, 0.0, 1.0, 1.0, 1.0, 1.0, 0.75, 0.75],
-            [1.0, 1.0, 1, 1, 1, 0.5, 0.0]
-        );
-        custom[9] = new Person(
-            [],
-            [0, 0, 0.75, 0.75, 1.0, 0.5, 1.0, 1.0, 0.25],
-            [0.33, 0.33, 1, 0, 1, 0.5, 0.0]
-        );
-
-        custom[10] = new Person(
-            [],
-            [0, 0, 0.5, 0.25, 1.0, 0.75, 1.0, 0.75, 0.75],
-            [0.0, 0.0, 0, 0, 1, 0.5, 0.0]
-        );
-        custom[11] = new Person(
-            [],
-            [0, 1, 0.5, 1.0, 1.0, 1.0, 0.75, 1.0, 0.75],
-            [0.33, 0.33, 1, 1, 1, 0.0, 0.5]
-        );
-        custom[12] = new Person(
-            [],
-            [1, 1, 0.25, 0.5, 0.75, 0.75, 0.5, 0.75, 0.75],
-            [1.0, 0.33, 1, 0, 1, 0.5, 0.25]
-        );
-        custom[13] = new Person(
-            [],
-            [1, 0, 0.75, 0.5, 1.0, 1.0, 0.75, 0.75, 0.5],
-            [0.67, 0.67, 1, 0, 0, 0.5, 0.25]
-        );
-        custom[25] = new Person(
-            [],
-            [0, 1, 0.75, 0.75, 0.5, 0.75, 1.0, 1.0, 0.75],
-            [0.0, 1.0, 1, 1, 0, 0.0, 0.5]
-        );
-        custom[26] = new Person(
-            [],
-            [0, 0, 1.0, 0.5, 0.25, 0.25, 0.75, 0.75, 0.5],
-            [0.0, 0.33, 1, 0, 0, 0.0, 0.0]
-        );
-        custom[27] = new Person(
-            [],
-            [1, 1, 0.25, 0.25, 0.5, 0.5, 0.75, 0.75, 0.75],
-            [1.0, 0.33, 1, 1, 1, 0.5, 0.25]
-        );
-        custom[28] = new Person(
-            [],
-            [1, 1, 0.75, 0.5, 0.75, 0.5, 1.0, 0.75, 0.5],
-            [0.33, 0.67, 1, 1, 0, 0.5, 0.5]
-        );
-        custom[29] = new Person(
-            [],
-            [0, 1, 0.25, 0.75, 0.75, 0.75, 0.75, 0.75, 0.5],
-            [0.33, 0.33, 1, 1, 1, 0.5, 0.5]
-        );
-
-        custom[30] = new Person(
-            [],
-            [1, 0, 0.5, 0.75, 0.75, 0.5, 0.25, 0.75, 0.25],
-            [0.33, 0.33, 1, 1, 1, 0.0, 0.25]
-        );
-        custom[31] = new Person(
-            [],
-            [1, 0, 0.75, 1.0, 0.75, 0.75, 0.75, 1.0, 0.75],
-            [0.33, 1.0, 0, 0, 1, 0.5, 0.5]
-        );
-        custom[32] = new Person(
-            [],
-            [1, 1, 0.5, 0.75, 1.0, 0.75, 0.75, 0.75, 0.75],
-            [0.0, 0.0, 0, 1, 1, 0.5, 0.0]
-        );
-        custom[33] = new Person(
-            [],
-            [1, 0, 1.0, 0.75, 0.75, 1.0, 0.75, 0.75, 1.0],
-            [0.33, 0.33, 1, 1, 1, 0.0, 0.5]
-        );
-        custom[34] = new Person(
-            [],
-            [1, 0, 0.75, 0.5, 0.75, 0.75, 0.75, 1.0, 0.5],
-            [0.33, 0.33, 1, 1, 1, 0.0, 0.25]
-        );
+        // TODO: Finish iterator for creating Person objects
+        // In the hetero/homo arrays get the data from the user model. Possibly can first use the Class model to get all Users in the class, then use a foreach loop instead to iterate.
+        for (let i = 0; i < Main.GENE_LENGTH; i++) {
+            custom[i] = new Person(
+                [], // Preference
+                [], // Hetero, in order as defined in weight.ts
+                []  // Homo, in order as defined in weight.ts
+            )
+        }
 
         return custom;
     }
@@ -164,11 +50,15 @@ class Main {
         population.printPopulation();
         console.log("\n");
 
+        // Generation loop. For now algo will always run 1000 times to reach local maxima due to changes to mutateSwap.
         let count = 0;
         while (count < Main.GENERATION_COUNT && population.getTotalFitness() < Main.FITNESS_LIMIT) {
+            // Step 1: Stochastic Universal Sampling
             const selectedGenes: Gene[] = Stochastic.selectGenes(population, Main.OFFSPRING_COUNT);
-            const limit = Main.GENE_LENGTH - 1;
 
+            const limit = Main.GENE_LENGTH - 1; // Limit for randomly selecting a Person from the gene
+
+            // Step 2: Crossover
             for (let i = 0; i < Main.OFFSPRING_COUNT; i += 2) {
                 if (Math.random() <= Main.CROSSOVER_PROBABILITY) {
                     const children: [Gene, Gene] = Crossover.pmxCrossover(
@@ -182,6 +72,7 @@ class Main {
                 }
             }
 
+            // Step 3: Mutation
             for (let i = 0; i < Main.OFFSPRING_COUNT; i++) {
                 if (Math.random() <= Main.MUTATION_PROBABILITY) {
                     selectedGenes[i] = selectedGenes[i].mutateSwap(
@@ -197,14 +88,17 @@ class Main {
                 }
             }
 
+            // Step 4: Elitism
             const childrenPopulation = population.getFittestGenes(
                 Main.POPULATION_SIZE - Main.OFFSPRING_COUNT
             );
             childrenPopulation.push(...selectedGenes);
             population.updateGenes(childrenPopulation);
-
+            
+            // Rando printing stuff, can ignore/delete
             console.log(`Generation: ${count}`);
             population.printTotalFitness();
+            
 
             count++;
         }
