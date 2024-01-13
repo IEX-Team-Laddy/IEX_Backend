@@ -35,10 +35,29 @@ export class Population {
         return this.genes;
     }
 
+    /**
+     * Returns {@param no} fittest genes in current population, modifies population order
+     */
     public getFittestGenes(no: number): Gene[] {
         return [...this.genes].sort(GeneComparator).slice(0, no);
     }
 
+    /**
+     * Returns fittest gene in current population without modifying population order
+     */
+    public getFittestNoSort(): Gene {
+        let fittestInPopulation = this.genes[0];
+        for (let i = 1; i < this.genes.length; i++) {
+            if (this.genes[i].getFitness() > fittestInPopulation.getFitness()) {
+                fittestInPopulation = this.genes[i];
+            }
+        }
+        return fittestInPopulation;
+    }
+
+    /**
+     * Updates population with new genes, length of {@param newGenes} must be the same as current genes
+     */
     public updateGenes(newGenes: Gene[]): void {
         if (newGenes.length === this.count) {
             this.genes = newGenes;

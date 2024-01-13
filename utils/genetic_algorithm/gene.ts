@@ -28,6 +28,14 @@ export default class Gene {
         }
     }
 
+    /**
+     * Sets base information for algorithm such as initial members of gene, aggregations/distributions etc.
+     * @param geneLength 
+     * @param groupNo 
+     * @param startingGene 
+     * @param aggregate Persons (id's) to be grouped together
+     * @param distribute Persons (id's) to be separated from each other
+     */
     public static setBaseInfo(
         geneLength: number,
         groupNo: number,
@@ -39,9 +47,9 @@ export default class Gene {
         aggregate.forEach((person) => Gene.aggregatedPersons.add(person));
         distribute.forEach((person) => Gene.distributedPersons.add(person));
 
+        // Set mean value of population for each hetero/homo characteristic
         Gene.meanHetero = new Array(Weight.HETERO_TOTAL_COUNT).fill(0);
         Gene.meanHomo = new Array(Weight.HOMO_TOTAL_COUNT).fill(0);
-
         Gene.baseGene.forEach((person) => {
             const hetero = person.getHeterogeneous();
             const homo = person.getHomogeneous();
@@ -53,6 +61,7 @@ export default class Gene {
             });
         });
 
+        // Store index of 1st member of each group within a gene (for group based calculations, difference in size between any 2 groups <= 1)
         Gene.groupIndex = new Array(groupNo).fill(0).map((_, i) => {
             const remainder = geneLength % groupNo;
             const standard = Math.floor(geneLength / groupNo);
@@ -62,6 +71,10 @@ export default class Gene {
         });
     }
 
+    /**
+     * Shuffles base gene for initial population generation
+     * @returns Randomly shuffled copy of base gene
+     */
     public static getShuffledBase(): Person[] {
         const shuffled = [...Gene.baseGene];
         for (let i = shuffled.length - 1; i > 0; i--) {
@@ -71,6 +84,11 @@ export default class Gene {
         return shuffled;
     }
 
+    /**
+     * Calculates Fitness of gene based on fMix (fHetero & fHomo), fBal, fPref and fDist
+     * @param gene Gene requiring fitness calculation
+     * @returns 
+     */
     public static calculateFitness(gene: Person[]): number {
         let fHetero = 0;
         let fHomo = 0;
@@ -78,11 +96,12 @@ export default class Gene {
         let fPref = 0;
         let fDist = 0;
 
+        // For each group in a gene
         for (let i = 0; i < this.groupIndex.length; i++) {
             const firstMem = this.groupIndex[i];
             const lastMem =
                 i < this.groupIndex.length - 1 ? this.groupIndex[i + 1] - 1 : gene.length - 1;
-
+            // For each pair in group
             for (let j = firstMem; j < lastMem; j++) {
                 for (let k = j + 1; k <= lastMem; k++) {
                     fHomo += Person.calcSimilarity(gene[j], gene[k]);
@@ -92,13 +111,14 @@ export default class Gene {
                 }
             }
 
+            // For fBal calculation, calculate mean value of each attribute for each group member
             const groupMeanHetero = new Array(Weight.HETERO_TOTAL_COUNT).fill(0);
             const groupMeanHomo = new Array(Weight.HOMO_TOTAL_COUNT).fill(0);
 
             for (let j = firstMem; j <= lastMem; j++) {
                 const hetero = gene[j].getHeterogeneous();
                 const homo = gene[j].getHomogeneous();
-
+                
                 for (let k = 0; k < Weight.HETERO_TOTAL_COUNT; k++) {
                     groupMeanHetero[k] += hetero[k] / gene.length;
                 }
@@ -116,6 +136,8 @@ export default class Gene {
         }
 
         const fMix = fHetero * Weight.WEIGHT_HETEROGENEOUS + fHomo * Weight.WEIGHT_HOMOGENEOUS;
+
+        // Fitness = 1 / F, hence numerator & denominator inverted
         return (
             Weight.F_TOTAL_WEIGHT /
             (fMix * Weight.WEIGHT_MIX +
@@ -146,14 +168,18 @@ export default class Gene {
     }
 
 
-    // For the current prototype we will impose the condition that the result of mutateSwap must be fitter than the input.
-    // This will mean the algorithm for now tends towards the local optima rather than search for a global optima, at least until we can improve the way each generation is created and stored.
-    // TODO: add result > input limitation
+    /**
+     * Performs swap mutation using randomly generated indexes {@param start} and {@param end}.
+     */
     public mutateSwap(index1: number, index2: number): Gene {
         [this.gene[index1], this.gene[index2]] = [this.gene[index2], this.gene[index1]];
         return this;
     }
 
+    /**
+     * Performs invert mutation, with condition to only apply when result is fitter than input.
+     * Uses randomly generated indexes {@param start} and {@param end}.
+     */
     public mutateInvert(index1: number, index2: number): Gene {
         const result = this.gene.slice(); // Copy for mutation
         let left = Math.min(index1, index2);

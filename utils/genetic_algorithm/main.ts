@@ -10,7 +10,7 @@ class Main {
     static GENE_LENGTH = 35;
     static GROUP_NUMBER = 7;
     static GENERATION_COUNT = 1000;
-    static FITNESS_LIMIT = 1000;
+    static FITNESS_LIMIT = 2000;
     static GENERATION_GAP = 0.9;
     static OFFSPRING_COUNT = Main.getOffspringCount();
     static CROSSOVER_PROBABILITY = 0.9;
@@ -50,8 +50,10 @@ class Main {
         population.printPopulation();
         console.log("\n");
 
-        // Generation loop. For now algo will always run 1000 times to reach local maxima due to changes to mutateSwap.
+        // Generation loop.
         let count = 0;
+        // Keep track of strongest gene ever found
+        let bestGene = population.getFittestNoSort();
         while (count < Main.GENERATION_COUNT && population.getTotalFitness() < Main.FITNESS_LIMIT) {
             // Step 1: Stochastic Universal Sampling
             const selectedGenes: Gene[] = Stochastic.selectGenes(population, Main.OFFSPRING_COUNT);
@@ -95,18 +97,20 @@ class Main {
             childrenPopulation.push(...selectedGenes);
             population.updateGenes(childrenPopulation);
             
-            // Rando printing stuff, can ignore/delete
-            console.log(`Generation: ${count}`);
-            population.printTotalFitness();
-            
+            // Step 5: Update best gene ever found
+            const fittestInPopulation = population.getFittestNoSort();
+            if (fittestInPopulation.getFitness() > bestGene.getFitness()) {
+                bestGene = fittestInPopulation;
+            }
 
             count++;
         }
 
+        // TODO: Change these to store result of fittest gene. RMB to update printAsGroup().
         population.printPopulation();
-        const fittest = population.getFittestGenes(1)[0];
-        console.log(`\n\nFittest gene: ${fittest.toString()}`);
-        fittest.printAsGroup();
+
+        console.log(`\n\nFittest gene: ${bestGene.toString()}`);
+        bestGene.printAsGroup();
     }
 }
 
