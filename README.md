@@ -1,3 +1,3 @@
-#IEX_Backend
+IEX_Backend
 
-##`Run npm i` to install the dependencies
+-   `Run npm i` to install the dependencies

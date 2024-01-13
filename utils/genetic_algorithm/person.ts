@@ -1,6 +1,6 @@
 // Person.ts
 import * as Weight from "./weight";
-import Gene from "./Gene";
+import Gene from "./gene";
 
 export class Person {
     private static globalId = 0;

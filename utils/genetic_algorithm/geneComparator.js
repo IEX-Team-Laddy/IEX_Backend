@@ -1,16 +1,18 @@
-// Gene.ts - Make sure this is correctly implemented
-import Gene from "./gene";
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GeneComparator = void 0;
 // GeneComparator.ts
-export function GeneComparator(g1: Gene, g2: Gene): number {
+function GeneComparator(g1, g2) {
     const fitness1 = g1.getFitness();
     const fitness2 = g2.getFitness();
-
     if (fitness1 < fitness2) {
         return 1; // if g1 should come after g2
-    } else if (fitness1 > fitness2) {
+    }
+    else if (fitness1 > fitness2) {
         return -1; // if g1 should come before g2
-    } else {
+    }
+    else {
         return 0; // if g1 and g2 are equal
     }
 }
+exports.GeneComparator = GeneComparator;
