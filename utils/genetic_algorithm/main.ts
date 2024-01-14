@@ -7,8 +7,8 @@ import { Person } from "./person";
 
 export class Main {
     static POPULATION_SIZE = 50;
-    static GENE_LENGTH = 20;
-    static GROUP_NUMBER = 5;
+    static GENE_LENGTH = 8;
+    static GROUP_NUMBER = 3;
     static GENERATION_COUNT = 1000;
     // static FITNESS_LIMIT = 2000;
     static GENERATION_GAP = 0.9;

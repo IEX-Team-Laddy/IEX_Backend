@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 import { ClassModel } from "../models/Class";
 import { StudentModel } from "../models/Student";
 
-//import { runAlgorithm } from "../utils/genetic_algorithm/main";
-
 //One user will be sending in one set of data at a time
 //Once the submitted responses are received, immediately start
 //running the algorithm, meanwhile send back an "OK" response to
@@ -44,8 +42,8 @@ export default async function handleQuestionData(req: Request, res: Response): P
             // Create a new class
             classData = new ClassModel({
                 className: className,
-                totalStudentCount: 20, // Hardcoded value
-                numberOfGroups: 5, // Hardcoded value
+                totalStudentCount: 8, // Hardcoded value
+                numberOfGroups: 3, // Hardcoded value
                 studentList: [student._id],
                 currentSubmittedCount: 1,
             });

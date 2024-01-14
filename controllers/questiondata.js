@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const Class_1 = require("../models/Class");
 const Student_1 = require("../models/Student");
-//import { runAlgorithm } from "../utils/genetic_algorithm/main";
 //One user will be sending in one set of data at a time
 //Once the submitted responses are received, immediately start
 //running the algorithm, meanwhile send back an "OK" response to
@@ -50,8 +49,8 @@ function handleQuestionData(req, res) {
                 // Create a new class
                 classData = new Class_1.ClassModel({
                     className: className,
-                    totalStudentCount: 20, // Hardcoded value
-                    numberOfGroups: 5, // Hardcoded value
+                    totalStudentCount: 8, // Hardcoded value
+                    numberOfGroups: 3, // Hardcoded value
                     studentList: [student._id],
                     currentSubmittedCount: 1,
                 });

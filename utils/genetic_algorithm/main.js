@@ -73,8 +73,8 @@ class Main {
 }
 exports.Main = Main;
 Main.POPULATION_SIZE = 50;
-Main.GENE_LENGTH = 20;
-Main.GROUP_NUMBER = 5;
+Main.GENE_LENGTH = 8;
+Main.GROUP_NUMBER = 3;
 Main.GENERATION_COUNT = 1000;
 // static FITNESS_LIMIT = 2000;
 Main.GENERATION_GAP = 0.9;
