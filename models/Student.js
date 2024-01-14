@@ -6,12 +6,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StudentModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const studentSchema = new mongoose_1.default.Schema({
-    email: {
+    studentId: {
         type: String,
         required: true,
         unique: true,
     },
-    data: [
+    homoData: [
+        {
+            type: Number,
+        },
+    ],
+    heteroData: [
         {
             type: Number,
         },

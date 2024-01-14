@@ -31,8 +31,8 @@ exports.Person = void 0;
 const Weight = __importStar(require("./weight"));
 const gene_1 = __importDefault(require("./gene"));
 class Person {
-    constructor(pref, hetero, homo) {
-        this.id = Person.globalId++;
+    constructor(pref, hetero, homo, id) {
+        this.id = id;
         this.preferences = pref;
         this.heterogeneous = hetero;
         this.homogeneous = homo;
@@ -84,4 +84,3 @@ class Person {
     }
 }
 exports.Person = Person;
-Person.globalId = 0;

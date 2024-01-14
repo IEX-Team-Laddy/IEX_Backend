@@ -29,7 +29,6 @@ exports.EXPLORE = 1;
 // Must contain all heterogeneous characteristics to be used for fitness calculation
 exports.heteroWeights = [
     exports.GENDER,
-    exports.MAJOR,
     exports.ADAPT_COMFORT,
     exports.COMMS_STYLE_PREF,
     exports.COMMS_INITIATE_COMFORT,

@@ -18,7 +18,7 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
-// import mongoose from "mongoose";
+const mongoose_1 = __importDefault(require("mongoose"));
 const questiondata_1 = __importDefault(require("./controllers/questiondata"));
 const getallocation_1 = __importDefault(require("./controllers/getallocation"));
 dotenv_1.default.config();
@@ -36,31 +36,35 @@ function setupRoutes(app) {
     //Sending over the questionaire data
     app.post("/questiondata", questiondata_1.default);
     //Probably a pulse check to see if the algorithm has published
-    //the results of the algorithm
     //Will return false until the data is ready
     app.get("/getallocation", getallocation_1.default);
     //Health status checks
     app.get("/", (req, res) => res.send("Server deployed successfully"));
     app.head("/", (req, res) => res.end());
 }
-// async function connectDatabase() {
-//     try {
-//         await mongoose.connect(process.env.MONGODB_URI, {
-//             useNewUrlParser: true,
-//             useUnifiedTopology: true,
-//         });
-//         console.log("MongoDB Connected...");
-//     } catch (error) {
-//         console.error("Failed to connect to MongoDB ", error);
-//         process.exit(1);
-//     }
-// }
+function connectDatabase() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            if (process.env.MONGODB_URI) {
+                yield mongoose_1.default.connect(process.env.MONGODB_URI);
+                console.log("MongoDB Connected...");
+            }
+            else {
+                throw new Error("MONGODB_URI not set");
+            }
+        }
+        catch (error) {
+            console.error("Failed to connect to MongoDB ", error);
+            process.exit(1);
+        }
+    });
+}
 function start() {
     return __awaiter(this, void 0, void 0, function* () {
         const app = (0, express_1.default)();
         setupMiddleware(app);
         setupRoutes(app);
-        //await connectDatabase();
+        yield connectDatabase();
         app.listen(process.env.PORT || 3001, () => console.log(`SERVER STARTED ON ${process.env.REACT_APP_SERVER_URL}`));
     });
 }

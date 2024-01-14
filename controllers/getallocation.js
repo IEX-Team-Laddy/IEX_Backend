@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Class_1 = require("../models/Class");
-const Student_1 = require("../models/Student");
+const main_1 = require("../utils/genetic_algorithm/main");
 //Check if the algorithm has published the final groupings
 //Check if submitted students == total students, then return
 //the final groupings by group_id
@@ -21,31 +21,27 @@ function getallocation(req, res) {
             // Retrieve the class name from the request parameters
             const { className } = req.params;
             // Fetch the class data using the className parameter
-            const classData = yield Class_1.ClassModel.findOne({ className });
+            const classData = yield Class_1.ClassModel.findOne({ className }).populate("studentList");
             if (!classData) {
                 res.status(404).send("Class not found");
                 return;
             }
-            // Check if all students have submitted their data
-            if (classData.currentSubmittedCount === classData.totalStudentCount) {
-                // Fetch the students and their group allocations
-                const students = yield Student_1.StudentModel.find({}, "allocatedGroupId").lean();
-                const groupings = students.reduce((acc, student) => {
-                    const groupId = student.allocatedGroupId ? student.allocatedGroupId - 1 : -1;
-                    if (groupId >= 0) {
-                        if (!acc[groupId]) {
-                            acc[groupId] = [];
-                        }
-                        acc[groupId].push(student);
-                    }
-                    return acc;
-                }, []);
-                // Send the groupings
-                res.status(200).json(groupings);
-            }
             else {
-                // If not all students have submitted their data
-                res.status(200).send("Groupings not ready yet");
+                const studentList = classData.studentList
+                    ? classData.studentList
+                    : [];
+                const idArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.studentId)) || [];
+                const homoDataArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.homoData || [])) || [];
+                const heteroDataArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.heteroData || [])) || [];
+                if (classData.currentSubmittedCount === classData.totalStudentCount) {
+                    const groupings = main_1.Main.main(idArray, homoDataArray, heteroDataArray);
+                    // Send the groupings
+                    res.status(200).json(groupings);
+                }
+                else {
+                    // If not all students have submitted their data
+                    res.status(200).send("Groupings not ready yet");
+                }
             }
         }
         catch (error) {

@@ -185,8 +185,8 @@ class Gene {
         return this.gene.map((person) => person.toString()).join(" ");
     }
     // TODO: change output from a console log -> store data in db or smthg
-    printAsGroup() {
-        console.log(`Fitness: ${this.fitness}`);
+    returnGroup() {
+        let arr = [];
         for (let i = 0; i < Gene.groupIndex.length; i++) {
             const firstMem = Gene.groupIndex[i];
             const lastMem = i < Gene.groupIndex.length - 1 ? Gene.groupIndex[i + 1] - 1 : this.gene.length - 1;
@@ -194,10 +194,9 @@ class Gene {
             for (let j = firstMem; j <= lastMem; j++) {
                 groupList.push(this.gene[j].getId());
             }
-            // Sorting the group list to maintain order.
-            const sortedGroupList = groupList.sort((a, b) => a - b);
-            console.log(sortedGroupList.join(" "));
+            arr.push(groupList);
         }
+        return arr;
     }
 }
 Gene.aggregatedPersons = new Set();
