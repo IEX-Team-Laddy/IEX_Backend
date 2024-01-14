@@ -13,7 +13,7 @@ dotenv.config();
 
 // This function sets up all the middleware for the app
 function setupMiddleware(app: Express) {
-    app.use(cors({ origin: process.env.REACT_APP_URL }));
+    app.use(cors({ origin: "*" }));
     app.use(helmet());
     app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
     app.use(morgan("common"));
@@ -27,7 +27,6 @@ function setupRoutes(app: Express) {
     app.post("/questiondata", handleQuestionData);
 
     //Probably a pulse check to see if the algorithm has published
-    //Will return false until the data is ready
     app.get("/invokeallocation/:className", invokeallocation);
 
     //Return the matches to the frontend
