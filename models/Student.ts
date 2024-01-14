@@ -1,18 +1,24 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 interface IStudent extends Document {
-    email: string;
-    data?: Number[];
+    studentId: string;
+    homoData?: number[];
+    heteroData?: number[];
     allocatedGroupId?: number;
 }
 
 const studentSchema: Schema = new mongoose.Schema({
-    email: {
+    studentId: {
         type: String,
         required: true,
         unique: true,
     },
-    data: [
+    homoData: [
+        {
+            type: Number,
+        },
+    ],
+    heteroData: [
         {
             type: Number,
         },

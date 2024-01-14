@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ClassModel } from "../models/Class";
 import { StudentModel, IStudent } from "../models/Student";
+import { Main } from "../utils/genetic_algorithm/main";
 
 //Check if the algorithm has published the final groupings
 
@@ -14,37 +15,30 @@ export default async function getallocation(req: Request, res: Response): Promis
         const { className } = req.params;
 
         // Fetch the class data using the className parameter
-        const classData = await ClassModel.findOne({ className });
+        const classData = await ClassModel.findOne({ className }).populate("studentList");
 
         if (!classData) {
             res.status(404).send("Class not found");
             return;
-        }
-
-        // Check if all students have submitted their data
-        if (classData.currentSubmittedCount === classData.totalStudentCount) {
-            // Fetch the students and their group allocations
-            const students = await StudentModel.find({}, "allocatedGroupId").lean();
-
-            // Logic to group students by allocatedGroupId
-            type Groupings = Array<Array<IStudent>>;
-
-            const groupings = students.reduce<Groupings>((acc, student) => {
-                const groupId = student.allocatedGroupId ? student.allocatedGroupId - 1 : -1;
-                if (groupId >= 0) {
-                    if (!acc[groupId]) {
-                        acc[groupId] = [];
-                    }
-                    acc[groupId].push(student);
-                }
-                return acc;
-            }, []);
-
-            // Send the groupings
-            res.status(200).json(groupings);
         } else {
-            // If not all students have submitted their data
-            res.status(200).send("Groupings not ready yet");
+            const studentList = classData.studentList
+                ? ((classData.studentList as unknown) as IStudent[])
+                : [];
+
+            const idArray: string[] = studentList?.map((student) => student.studentId) || [];
+            const homoDataArray: number[][] =
+                studentList?.map((student) => student.homoData || []) || [];
+            const heteroDataArray: number[][] =
+                studentList?.map((student) => student.heteroData || []) || [];
+
+            if (classData.currentSubmittedCount === classData.totalStudentCount) {
+                const groupings = Main.main(idArray, homoDataArray, heteroDataArray);
+                // Send the groupings
+                res.status(200).json(groupings);
+            } else {
+                // If not all students have submitted their data
+                res.status(200).send("Groupings not ready yet");
+            }
         }
     } catch (error) {
         console.error("Error handling getallocation", error);

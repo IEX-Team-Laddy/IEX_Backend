@@ -30,9 +30,9 @@ export default class Gene {
 
     /**
      * Sets base information for algorithm such as initial members of gene, aggregations/distributions etc.
-     * @param geneLength 
-     * @param groupNo 
-     * @param startingGene 
+     * @param geneLength
+     * @param groupNo
+     * @param startingGene
      * @param aggregate Persons (id's) to be grouped together
      * @param distribute Persons (id's) to be separated from each other
      */
@@ -87,7 +87,7 @@ export default class Gene {
     /**
      * Calculates Fitness of gene based on fMix (fHetero & fHomo), fBal, fPref and fDist
      * @param gene Gene requiring fitness calculation
-     * @returns 
+     * @returns
      */
     public static calculateFitness(gene: Person[]): number {
         let fHetero = 0;
@@ -118,7 +118,7 @@ export default class Gene {
             for (let j = firstMem; j <= lastMem; j++) {
                 const hetero = gene[j].getHeterogeneous();
                 const homo = gene[j].getHomogeneous();
-                
+
                 for (let k = 0; k < Weight.HETERO_TOTAL_COUNT; k++) {
                     groupMeanHetero[k] += hetero[k] / gene.length;
                 }
@@ -167,7 +167,6 @@ export default class Gene {
         return new Gene(child, this.length, Gene.calculateFitness(child));
     }
 
-
     /**
      * Performs swap mutation using randomly generated indexes {@param start} and {@param end}.
      */
@@ -205,8 +204,8 @@ export default class Gene {
     }
 
     // TODO: change output from a console log -> store data in db or smthg
-    public printAsGroup(): void {
-        console.log(`Fitness: ${this.fitness}`);
+    public returnGroup(): Array<Array<number>> {
+        let arr = [];
         for (let i = 0; i < Gene.groupIndex.length; i++) {
             const firstMem = Gene.groupIndex[i];
             const lastMem =
@@ -215,9 +214,8 @@ export default class Gene {
             for (let j = firstMem; j <= lastMem; j++) {
                 groupList.push(this.gene[j].getId());
             }
-            // Sorting the group list to maintain order.
-            const sortedGroupList = groupList.sort((a, b) => a - b);
-            console.log(sortedGroupList.join(" "));
+            arr.push(groupList);
         }
+        return arr;
     }
 }

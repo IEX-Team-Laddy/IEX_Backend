@@ -3,15 +3,13 @@ import * as Weight from "./weight";
 import Gene from "./gene";
 
 export class Person {
-    private static globalId = 0;
-
     private readonly id: number;
     private readonly preferences: number[]; // Assuming preferences are stored as an array of numbers (IDs)
     private readonly heterogeneous: number[]; // Heterogeneous characteristic values in order as defined in weight.ts
     private readonly homogeneous: number[]; // Same as above but for Homogeneous characteristics
 
-    public constructor(pref: number[], hetero: number[], homo: number[]) {
-        this.id = Person.globalId++;
+    public constructor(pref: number[], hetero: number[], homo: number[], id: number) {
+        this.id = id;
         this.preferences = pref;
         this.heterogeneous = hetero;
         this.homogeneous = homo;

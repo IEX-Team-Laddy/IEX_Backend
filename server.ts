@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
-// import mongoose from "mongoose";
+import mongoose from "mongoose";
 import handleQuestionData from "./controllers/questiondata";
 import getallocation from "./controllers/getallocation";
 
@@ -26,7 +26,6 @@ function setupRoutes(app: Express) {
     app.post("/questiondata", handleQuestionData);
 
     //Probably a pulse check to see if the algorithm has published
-    //the results of the algorithm
     //Will return false until the data is ready
     app.get("/getallocation", getallocation);
 
@@ -35,24 +34,25 @@ function setupRoutes(app: Express) {
     app.head("/", (req: Request, res: Response) => res.end());
 }
 
-// async function connectDatabase() {
-//     try {
-//         await mongoose.connect(process.env.MONGODB_URI, {
-//             useNewUrlParser: true,
-//             useUnifiedTopology: true,
-//         });
-//         console.log("MongoDB Connected...");
-//     } catch (error) {
-//         console.error("Failed to connect to MongoDB ", error);
-//         process.exit(1);
-//     }
-// }
+async function connectDatabase() {
+    try {
+        if (process.env.MONGODB_URI) {
+            await mongoose.connect(process.env.MONGODB_URI);
+            console.log("MongoDB Connected...");
+        } else {
+            throw new Error("MONGODB_URI not set");
+        }
+    } catch (error) {
+        console.error("Failed to connect to MongoDB ", error);
+        process.exit(1);
+    }
+}
 
 async function start() {
     const app: Express = express();
     setupMiddleware(app);
     setupRoutes(app);
-    //await connectDatabase();
+    await connectDatabase();
 
     app.listen(process.env.PORT || 3001, () =>
         console.log(`SERVER STARTED ON ${process.env.REACT_APP_SERVER_URL}`)

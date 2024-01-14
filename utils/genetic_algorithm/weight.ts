@@ -29,7 +29,6 @@ export const EXPLORE = 1;
 // Must contain all heterogeneous characteristics to be used for fitness calculation
 export const heteroWeights: number[] = [
     GENDER,
-    MAJOR,
     ADAPT_COMFORT,
     COMMS_STYLE_PREF,
     COMMS_INITIATE_COMFORT,

@@ -5,12 +5,12 @@ import Crossover from "./crossover";
 import Gene from "./gene";
 import { Person } from "./person";
 
-class Main {
+export class Main {
     static POPULATION_SIZE = 50;
-    static GENE_LENGTH = 35;
-    static GROUP_NUMBER = 7;
+    static GENE_LENGTH = 20;
+    static GROUP_NUMBER = 5;
     static GENERATION_COUNT = 1000;
-    static FITNESS_LIMIT = 2000;
+    // static FITNESS_LIMIT = 2000;
     static GENERATION_GAP = 0.9;
     static OFFSPRING_COUNT = Main.getOffspringCount();
     static CROSSOVER_PROBABILITY = 0.9;
@@ -21,7 +21,11 @@ class Main {
         return count % 2 === 0 ? count : count + 1;
     }
 
-    static createCustomGene(): Person[] {
+    static createCustomGene(
+        idArray: string[],
+        homoDataArray: number[][],
+        heteroDataArray: number[][]
+    ): Person[] {
         const custom: Person[] = new Array(Main.GENE_LENGTH);
 
         // TODO: Finish iterator for creating Person objects
@@ -29,20 +33,24 @@ class Main {
         for (let i = 0; i < Main.GENE_LENGTH; i++) {
             custom[i] = new Person(
                 [], // Preference
-                [], // Hetero, in order as defined in weight.ts
-                [] // Homo, in order as defined in weight.ts
+                heteroDataArray[i], // Hetero, in order as defined in weight.ts
+                homoDataArray[i], // Homo, in order as defined in weight.ts,
+                Number(idArray[i])
             );
         }
-
         return custom;
     }
 
-    static main(): void {
+    static main(
+        idArray: string[],
+        homoDataArray: number[][],
+        heteroDataArray: number[][]
+    ): number[][] {
         const population = Population.initialise(
             Main.GENE_LENGTH,
             Main.POPULATION_SIZE,
             Main.GROUP_NUMBER,
-            Main.createCustomGene(),
+            Main.createCustomGene(idArray, homoDataArray, heteroDataArray),
             [], // Aggregate IDs
             [] // Distribute IDs
         );
@@ -54,7 +62,7 @@ class Main {
         let count = 0;
         // Keep track of strongest gene ever found
         let bestGene = population.getFittestNoSort();
-        while (count < Main.GENERATION_COUNT && population.getTotalFitness() < Main.FITNESS_LIMIT) {
+        while (count < Main.GENERATION_COUNT) {
             // Step 1: Stochastic Universal Sampling
             const selectedGenes: Gene[] = Stochastic.selectGenes(population, Main.OFFSPRING_COUNT);
 
@@ -106,10 +114,6 @@ class Main {
             count++;
         }
 
-        // TODO: Change these to store result of fittest gene. RMB to update printAsGroup().
-        population.printPopulation();
-
-        console.log(`\n\nFittest gene: ${bestGene.toString()}`);
-        bestGene.printAsGroup();
+        return bestGene.returnGroup();
     }
 }

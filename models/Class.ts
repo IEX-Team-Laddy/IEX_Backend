@@ -8,7 +8,7 @@ interface IClass extends Document {
     studentList?: mongoose.Types.ObjectId[];
 }
 
-//hardcode the first 3 variables
+//hardcode the 2nd and 3rd variables
 const classSchema: Schema = new mongoose.Schema({
     className: {
         type: String,
