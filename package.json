@@ -5,7 +5,7 @@
     "main": "server.ts",
     "scripts": {
         "start": "node server.js",
-        "build": "npm install --save-dev @types/express @types/body-parser && tsc",
+        "build": "npm install --save-dev typescript @types/express @types/body-parser && tsc",
         "dev": "ts-node server.ts"
     },
     "repository": {
