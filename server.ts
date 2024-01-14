@@ -6,7 +6,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 import mongoose from "mongoose";
 import handleQuestionData from "./controllers/questiondata";
-import getallocation from "./controllers/getallocation";
+import invokeallocation from "./controllers/invokeallocation";
+import matches from "./controllers/matches";
 
 dotenv.config();
 
@@ -27,7 +28,10 @@ function setupRoutes(app: Express) {
 
     //Probably a pulse check to see if the algorithm has published
     //Will return false until the data is ready
-    app.get("/getallocation", getallocation);
+    app.get("/invokeallocation", invokeallocation);
+
+    //Return the matches to the frontend
+    app.get("/matches", matches);
 
     //Health status checks
     app.get("/", (req: Request, res: Response) => res.send("Server deployed successfully"));

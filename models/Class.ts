@@ -6,6 +6,7 @@ interface IClass extends Document {
     numberOfGroups: number;
     currentSubmittedCount?: number;
     studentList?: mongoose.Types.ObjectId[];
+    groupings?: number[][];
 }
 
 //hardcode the 2nd and 3rd variables
@@ -33,6 +34,7 @@ const classSchema: Schema = new mongoose.Schema({
             ref: "Student",
         },
     ],
+    groupings: [[Number]],
 });
 
 const ClassModel = mongoose.model<IClass>("Class", classSchema);

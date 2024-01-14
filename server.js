@@ -20,7 +20,8 @@ const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const questiondata_1 = __importDefault(require("./controllers/questiondata"));
-const getallocation_1 = __importDefault(require("./controllers/getallocation"));
+const invokeallocation_1 = __importDefault(require("./controllers/invokeallocation"));
+const matches_1 = __importDefault(require("./controllers/matches"));
 dotenv_1.default.config();
 // This function sets up all the middleware for the app
 function setupMiddleware(app) {
@@ -37,7 +38,8 @@ function setupRoutes(app) {
     app.post("/questiondata", questiondata_1.default);
     //Probably a pulse check to see if the algorithm has published
     //Will return false until the data is ready
-    app.get("/getallocation", getallocation_1.default);
+    app.get("/invokeallocation", invokeallocation_1.default);
+    app.get("/matches", matches_1.default);
     //Health status checks
     app.get("/", (req, res) => res.send("Server deployed successfully"));
     app.head("/", (req, res) => res.end());

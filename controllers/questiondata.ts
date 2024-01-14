@@ -12,6 +12,7 @@ import { StudentModel } from "../models/Student";
 export default async function handleQuestionData(req: Request, res: Response): Promise<void> {
     try {
         const arr: Array<String & number[]> = req.body;
+        console.log(arr);
 
         // Retrieve the data from the request body
         const className: String = arr[0];

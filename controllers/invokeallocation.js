@@ -15,7 +15,7 @@ const main_1 = require("../utils/genetic_algorithm/main");
 //Check if submitted students == total students, then return
 //the final groupings by group_id
 //result is an array of array whose inherent index is group_id - 1
-function getallocation(req, res) {
+function invokeallocation(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             // Retrieve the class name from the request parameters
@@ -35,12 +35,13 @@ function getallocation(req, res) {
                 const heteroDataArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.heteroData || [])) || [];
                 if (classData.currentSubmittedCount === classData.totalStudentCount) {
                     const groupings = main_1.Main.main(idArray, homoDataArray, heteroDataArray);
-                    // Send the groupings
-                    res.status(200).json(groupings);
+                    // Save the groupings
+                    classData.groupings = groupings;
+                    res.status(200).json("Successfully ran the algo and saved the data");
                 }
                 else {
                     // If not all students have submitted their data
-                    res.status(200).send("Groupings not ready yet");
+                    res.status(400).send("Groupings not ready yet");
                 }
             }
         }
@@ -50,4 +51,4 @@ function getallocation(req, res) {
         }
     });
 }
-exports.default = getallocation;
+exports.default = invokeallocation;

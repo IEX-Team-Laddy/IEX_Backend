@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ClassModel } from "../models/Class";
-import { StudentModel, IStudent } from "../models/Student";
+import { IStudent } from "../models/Student";
 import { Main } from "../utils/genetic_algorithm/main";
 
 //Check if the algorithm has published the final groupings
@@ -9,7 +9,7 @@ import { Main } from "../utils/genetic_algorithm/main";
 //the final groupings by group_id
 //result is an array of array whose inherent index is group_id - 1
 
-export default async function getallocation(req: Request, res: Response): Promise<void> {
+export default async function invokeallocation(req: Request, res: Response): Promise<void> {
     try {
         // Retrieve the class name from the request parameters
         const { className } = req.params;
@@ -33,11 +33,12 @@ export default async function getallocation(req: Request, res: Response): Promis
 
             if (classData.currentSubmittedCount === classData.totalStudentCount) {
                 const groupings = Main.main(idArray, homoDataArray, heteroDataArray);
-                // Send the groupings
-                res.status(200).json(groupings);
+                // Save the groupings
+                classData.groupings = groupings;
+                res.status(200).json("Successfully ran the algo and saved the data");
             } else {
                 // If not all students have submitted their data
-                res.status(200).send("Groupings not ready yet");
+                res.status(400).send("Groupings not ready yet");
             }
         }
     } catch (error) {

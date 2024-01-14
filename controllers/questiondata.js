@@ -21,6 +21,7 @@ function handleQuestionData(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const arr = req.body;
+            console.log(arr);
             // Retrieve the data from the request body
             const className = arr[0];
             const studentId = arr[1];
