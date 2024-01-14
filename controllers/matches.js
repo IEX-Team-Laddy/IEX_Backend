@@ -12,15 +12,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Class_1 = require("../models/Class");
 function matches(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const className = req.body;
-        const _class = yield Class_1.ClassModel.findOne({
-            className,
-        });
-        if (!_class) {
-            res.status(404).send("Class not found");
-            return;
+        try {
+            console.log(req.body[0]);
+            const className = req.body[0];
+            const _class = yield Class_1.ClassModel.findOne({
+                className,
+            });
+            if (!_class) {
+                res.status(404).send("Class not found");
+                return;
+            }
+            res.status(200).send(_class === null || _class === void 0 ? void 0 : _class.groupings);
         }
-        res.status(200).send(_class === null || _class === void 0 ? void 0 : _class.groupings);
+        catch (err) {
+            console.error(err);
+        }
     });
 }
 exports.default = matches;

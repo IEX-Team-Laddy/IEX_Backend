@@ -6,8 +6,8 @@ export default class Gene {
     private static meanHetero: number[];
     private static meanHomo: number[];
     private static groupIndex: number[];
-    public static aggregatedPersons: Set<number> = new Set();
-    public static distributedPersons: Set<number> = new Set();
+    public static aggregatedPersons: Set<string> = new Set();
+    public static distributedPersons: Set<string> = new Set();
 
     private gene: Person[];
     private fitness: number;
@@ -40,8 +40,8 @@ export default class Gene {
         geneLength: number,
         groupNo: number,
         startingGene: Person[],
-        aggregate: number[],
-        distribute: number[]
+        aggregate: string[],
+        distribute: string[]
     ): void {
         Gene.baseGene = startingGene;
         aggregate.forEach((person) => Gene.aggregatedPersons.add(person));
@@ -204,13 +204,13 @@ export default class Gene {
     }
 
     // TODO: change output from a console log -> store data in db or smthg
-    public returnGroup(): Array<Array<number>> {
+    public returnGroup(): Array<Array<string>> {
         let arr = [];
         for (let i = 0; i < Gene.groupIndex.length; i++) {
             const firstMem = Gene.groupIndex[i];
             const lastMem =
                 i < Gene.groupIndex.length - 1 ? Gene.groupIndex[i + 1] - 1 : this.gene.length - 1;
-            const groupList: number[] = [];
+            const groupList: string[] = [];
             for (let j = firstMem; j <= lastMem; j++) {
                 groupList.push(this.gene[j].getId());
             }

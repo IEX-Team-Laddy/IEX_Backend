@@ -35,7 +35,7 @@ export class Main {
                 [], // Preference
                 heteroDataArray[i], // Hetero, in order as defined in weight.ts
                 homoDataArray[i], // Homo, in order as defined in weight.ts,
-                Number(idArray[i])
+                idArray[i]
             );
         }
         return custom;
@@ -45,7 +45,7 @@ export class Main {
         idArray: string[],
         homoDataArray: number[][],
         heteroDataArray: number[][]
-    ): number[][] {
+    ): string[][] {
         const population = Population.initialise(
             Main.GENE_LENGTH,
             Main.POPULATION_SIZE,

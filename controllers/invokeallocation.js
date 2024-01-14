@@ -19,7 +19,7 @@ function invokeallocation(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             // Retrieve the class name from the request parameters
-            const { className } = req.params;
+            const className = req.params.className;
             // Fetch the class data using the className parameter
             const classData = yield Class_1.ClassModel.findOne({ className }).populate("studentList");
             if (!classData) {
@@ -37,6 +37,7 @@ function invokeallocation(req, res) {
                     const groupings = main_1.Main.main(idArray, homoDataArray, heteroDataArray);
                     // Save the groupings
                     classData.groupings = groupings;
+                    yield classData.save();
                     res.status(200).json("Successfully ran the algo and saved the data");
                 }
                 else {

@@ -28,10 +28,10 @@ function setupRoutes(app: Express) {
 
     //Probably a pulse check to see if the algorithm has published
     //Will return false until the data is ready
-    app.get("/invokeallocation", invokeallocation);
+    app.get("/invokeallocation/:className", invokeallocation);
 
     //Return the matches to the frontend
-    app.get("/matches", matches);
+    app.post("/matches", matches);
 
     //Health status checks
     app.get("/", (req: Request, res: Response) => res.send("Server deployed successfully"));

@@ -22,7 +22,7 @@ class Main {
             custom[i] = new person_1.Person([], // Preference
             heteroDataArray[i], // Hetero, in order as defined in weight.ts
             homoDataArray[i], // Homo, in order as defined in weight.ts,
-            Number(idArray[i]));
+            idArray[i]);
         }
         return custom;
     }

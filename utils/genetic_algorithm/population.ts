@@ -20,8 +20,8 @@ export class Population {
         geneCount: number,
         groupNo: number,
         customGene: Person[],
-        aggregate: number[],
-        distribute: number[]
+        aggregate: string[],
+        distribute: string[]
     ): Population {
         Gene.setBaseInfo(geneLength, groupNo, customGene, aggregate, distribute);
         return new Population(geneLength, geneCount);

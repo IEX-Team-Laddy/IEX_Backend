@@ -30,7 +30,7 @@ const classSchema = new mongoose_1.default.Schema({
             ref: "Student",
         },
     ],
-    groupings: [[Number]],
+    groupings: [[String]],
 });
 const ClassModel = mongoose_1.default.model("Class", classSchema);
 exports.ClassModel = ClassModel;

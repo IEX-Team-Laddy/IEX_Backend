@@ -38,8 +38,9 @@ function setupRoutes(app) {
     app.post("/questiondata", questiondata_1.default);
     //Probably a pulse check to see if the algorithm has published
     //Will return false until the data is ready
-    app.get("/invokeallocation", invokeallocation_1.default);
-    app.get("/matches", matches_1.default);
+    app.get("/invokeallocation/:className", invokeallocation_1.default);
+    //Return the matches to the frontend
+    app.post("/matches", matches_1.default);
     //Health status checks
     app.get("/", (req, res) => res.send("Server deployed successfully"));
     app.head("/", (req, res) => res.end());

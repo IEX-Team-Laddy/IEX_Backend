@@ -12,7 +12,7 @@ import { Main } from "../utils/genetic_algorithm/main";
 export default async function invokeallocation(req: Request, res: Response): Promise<void> {
     try {
         // Retrieve the class name from the request parameters
-        const { className } = req.params;
+        const className = req.params.className;
 
         // Fetch the class data using the className parameter
         const classData = await ClassModel.findOne({ className }).populate("studentList");
@@ -22,7 +22,7 @@ export default async function invokeallocation(req: Request, res: Response): Pro
             return;
         } else {
             const studentList = classData.studentList
-                ? ((classData.studentList as unknown) as IStudent[])
+                ? (classData.studentList as unknown as IStudent[])
                 : [];
 
             const idArray: string[] = studentList?.map((student) => student.studentId) || [];
@@ -35,6 +35,7 @@ export default async function invokeallocation(req: Request, res: Response): Pro
                 const groupings = Main.main(idArray, homoDataArray, heteroDataArray);
                 // Save the groupings
                 classData.groupings = groupings;
+                await classData.save();
                 res.status(200).json("Successfully ran the algo and saved the data");
             } else {
                 // If not all students have submitted their data
