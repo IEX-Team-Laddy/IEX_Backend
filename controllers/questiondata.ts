@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { ClassModel } from "../models/Class";
 import { StudentModel } from "../models/Student";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 //One user will be sending in one set of data at a time
 //Once the submitted responses are received, immediately start
@@ -42,8 +45,8 @@ export default async function handleQuestionData(req: Request, res: Response): P
             // Create a new class
             classData = new ClassModel({
                 className: className,
-                totalStudentCount: 8, // Hardcoded value
-                numberOfGroups: 3, // Hardcoded value
+                totalStudentCount: parseInt(process.env.TOTALSTUDENTCOUNT ?? "20"),
+                numberOfGroups: parseInt(process.env.NUMBEROFGROUPS ?? "4"),
                 studentList: [student._id],
                 currentSubmittedCount: 1,
             });
