@@ -3,6 +3,7 @@ import { ClassModel } from "../models/Class";
 
 export default async function matches(req: Request, res: Response): Promise<void> {
     try {
+        //Extract class name from request body (ex: ["NPS2001A"])
         console.log(req.body[0]);
         const className = req.body[0];
         const _class = await ClassModel.findOne({

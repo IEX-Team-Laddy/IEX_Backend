@@ -22,14 +22,18 @@ export default async function invokeallocation(req: Request, res: Response): Pro
             return;
         } else {
             const studentList = classData.studentList
-                ? (classData.studentList as unknown as IStudent[])
+                ? ((classData.studentList as unknown) as IStudent[])
                 : [];
 
-            const idArray: string[] = studentList?.map((student) => student.studentId) || [];
-            const homoDataArray: number[][] =
-                studentList?.map((student) => student.homoData || []) || [];
-            const heteroDataArray: number[][] =
-                studentList?.map((student) => student.heteroData || []) || [];
+            const idArray: string[] = [];
+            const homoDataArray: number[][] = [];
+            const heteroDataArray: number[][] = [];
+
+            for (const student of studentList) {
+                idArray.push(student.studentId || "");
+                homoDataArray.push(student.homoData || []);
+                heteroDataArray.push(student.heteroData || []);
+            }
 
             if (classData.currentSubmittedCount === classData.totalStudentCount) {
                 const groupings = Main.main(idArray, homoDataArray, heteroDataArray);

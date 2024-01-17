@@ -6,9 +6,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 //One user will be sending in one set of data at a time
-//Once the submitted responses are received, immediately start
-//running the algorithm, meanwhile send back an "OK" response to
-//the last user who submitted the data
+//Once the submitted responses are received
+//Send back an "OK" response
 
 export default async function handleQuestionData(req: Request, res: Response): Promise<void> {
     try {
