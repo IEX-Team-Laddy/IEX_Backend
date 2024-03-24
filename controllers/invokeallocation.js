@@ -30,9 +30,14 @@ function invokeallocation(req, res) {
                 const studentList = classData.studentList
                     ? classData.studentList
                     : [];
-                const idArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.studentId)) || [];
-                const homoDataArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.homoData || [])) || [];
-                const heteroDataArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.heteroData || [])) || [];
+                const idArray = [];
+                const homoDataArray = [];
+                const heteroDataArray = [];
+                for (const student of studentList) {
+                    idArray.push(student.studentId || "");
+                    homoDataArray.push(student.homoData || []);
+                    heteroDataArray.push(student.heteroData || []);
+                }
                 if (classData.currentSubmittedCount === classData.totalStudentCount) {
                     const groupings = main_1.Main.main(idArray, homoDataArray, heteroDataArray);
                     // Save the groupings

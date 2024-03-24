@@ -7,9 +7,9 @@ exports.F_TOTAL_WEIGHT = exports.WEIGHT_PREFERENCE = exports.WEIGHT_DISTRIBUTION
 exports.GENDER = 1;
 exports.MAJOR = 1;
 exports.ADAPT_COMFORT = 1;
-exports.COMMS_STYLE_PREF = 1;
-exports.COMMS_INITIATE_COMFORT = 1;
-exports.COMMS_INITIATE_CONSISTENCY = 1;
+exports.COMMS_STYLE_PREF = 2;
+exports.COMMS_INITIATE_COMFORT = 2;
+exports.COMMS_INITIATE_CONSISTENCY = 2;
 exports.MANAGE_MISTAKE = 1;
 exports.MANAGE_CONFLICT = 1;
 // Homogeneous characteristic weights
@@ -17,8 +17,8 @@ exports.FEEDBACK_GIVE = 1;
 exports.FEEDBACK_RECEIVE = 1;
 exports.BIRD_OWL = 1;
 exports.MEETING_TIME = 1;
-exports.DOER_PLANNER = 1;
-exports.MANAGE_DEADLINE = 1;
+exports.DOER_PLANNER = 2;
+exports.MANAGE_DEADLINE = 2;
 exports.WORK_CONSISTENCY = 1;
 exports.WORK_COMMITMENT = 1;
 exports.MEETING_LOCATION = 1;

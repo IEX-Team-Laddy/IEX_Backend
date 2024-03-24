@@ -10,8 +10,8 @@ dotenv.config();
 
 export class Main {
     static POPULATION_SIZE = 50;
-    static GENE_LENGTH = parseInt(process.env.TOTALSTUDENTCOUNT ?? "20");
-    static GROUP_NUMBER = parseInt(process.env.NUMBEROFGROUPS ?? "4");
+    static GENE_LENGTH = 100;
+    static GROUP_NUMBER = 5;
     static GENERATION_COUNT = 1000;
     // static FITNESS_LIMIT = 2000;
     static GENERATION_GAP = 0.9;

@@ -8,15 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const Class_1 = require("../models/Class");
 const Student_1 = require("../models/Student");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 //One user will be sending in one set of data at a time
-//Once the submitted responses are received, immediately start
-//running the algorithm, meanwhile send back an "OK" response to
-//the last user who submitted the data
+//Once the submitted responses are received
+//Send back an "OK" response
 function handleQuestionData(req, res) {
-    var _a, _b, _c;
+    var _a, _b, _c, _d, _e;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const arr = req.body;
@@ -49,18 +53,18 @@ function handleQuestionData(req, res) {
                 // Create a new class
                 classData = new Class_1.ClassModel({
                     className: className,
-                    totalStudentCount: 8, // Hardcoded value
-                    numberOfGroups: 3, // Hardcoded value
+                    totalStudentCount: parseInt((_a = process.env.TOTALSTUDENTCOUNT) !== null && _a !== void 0 ? _a : "20"),
+                    numberOfGroups: parseInt((_b = process.env.NUMBEROFGROUPS) !== null && _b !== void 0 ? _b : "4"),
                     studentList: [student._id],
                     currentSubmittedCount: 1,
                 });
             }
             else {
                 // Update the class's studentList and currentSubmittedCount
-                if (!((_a = classData.studentList) === null || _a === void 0 ? void 0 : _a.includes(student._id))) {
-                    classData.studentList = (_b = classData.studentList) !== null && _b !== void 0 ? _b : [];
+                if (!((_c = classData.studentList) === null || _c === void 0 ? void 0 : _c.includes(student._id))) {
+                    classData.studentList = (_d = classData.studentList) !== null && _d !== void 0 ? _d : [];
                     classData.studentList.push(student._id);
-                    classData.currentSubmittedCount = (_c = classData.currentSubmittedCount) !== null && _c !== void 0 ? _c : 0;
+                    classData.currentSubmittedCount = (_e = classData.currentSubmittedCount) !== null && _e !== void 0 ? _e : 0;
                     classData.currentSubmittedCount += 1;
                 }
             }
