@@ -5,9 +5,9 @@
 export const GENDER = 1;
 export const MAJOR = 1;
 export const ADAPT_COMFORT = 1;
-export const COMMS_STYLE_PREF = 1;
-export const COMMS_INITIATE_COMFORT = 1;
-export const COMMS_INITIATE_CONSISTENCY = 1;
+export const COMMS_STYLE_PREF = 2;
+export const COMMS_INITIATE_COMFORT = 2;
+export const COMMS_INITIATE_CONSISTENCY = 2;
 export const MANAGE_MISTAKE = 1;
 export const MANAGE_CONFLICT = 1;
 
@@ -16,8 +16,8 @@ export const FEEDBACK_GIVE = 1;
 export const FEEDBACK_RECEIVE = 1;
 export const BIRD_OWL = 1;
 export const MEETING_TIME = 1;
-export const DOER_PLANNER = 1;
-export const MANAGE_DEADLINE = 1;
+export const DOER_PLANNER = 2;
+export const MANAGE_DEADLINE = 2;
 export const WORK_CONSISTENCY = 1;
 export const WORK_COMMITMENT = 1;
 export const MEETING_LOCATION = 1;
