@@ -9,8 +9,6 @@ const population_1 = require("./population");
 const stochastic_1 = require("./stochastic");
 const crossover_1 = __importDefault(require("./crossover"));
 const person_1 = require("./person");
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
 class Main {
     static getOffspringCount() {
         const count = Math.floor(Main.POPULATION_SIZE * Main.GENERATION_GAP);
@@ -75,8 +73,8 @@ class Main {
 }
 exports.Main = Main;
 Main.POPULATION_SIZE = 50;
-Main.GENE_LENGTH = 100;
-Main.GROUP_NUMBER = 5;
+Main.GENE_LENGTH = 8;
+Main.GROUP_NUMBER = 3;
 Main.GENERATION_COUNT = 1000;
 // static FITNESS_LIMIT = 2000;
 Main.GENERATION_GAP = 0.9;
