@@ -25,15 +25,9 @@ export default async function invokeallocation(req: Request, res: Response): Pro
                 ? ((classData.studentList as unknown) as IStudent[])
                 : [];
 
-            const idArray: string[] = [];
-            const homoDataArray: number[][] = [];
-            const heteroDataArray: number[][] = [];
-
-            for (const student of studentList) {
-                idArray.push(student.studentId || "");
-                homoDataArray.push(student.homoData || []);
-                heteroDataArray.push(student.heteroData || []);
-            }
+            const idArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.studentId)) || [];
+            const homoDataArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.homoData || [])) || [];
+            const heteroDataArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.heteroData || [])) || [];
 
             if (classData.currentSubmittedCount === classData.totalStudentCount) {
                 const groupings = Main.main(idArray, homoDataArray, heteroDataArray);
