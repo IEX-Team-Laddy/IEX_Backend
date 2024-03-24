@@ -57,6 +57,7 @@ export default class Gene {
                 Gene.meanHetero[index] += value / geneLength;
             });
             homo.forEach((value, index) => {
+                console.log("I am HOMO ", homo)
                 Gene.meanHomo[index] += value / geneLength;
             });
         });
