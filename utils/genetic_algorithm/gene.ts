@@ -172,7 +172,7 @@ export default class Gene {
      */
     public mutateSwap(index1: number, index2: number): Gene {
         [this.gene[index1], this.gene[index2]] = [this.gene[index2], this.gene[index1]];
-        return this;
+        return new Gene(this.gene, this.length, Gene.calculateFitness(this.gene));
     }
 
     /**

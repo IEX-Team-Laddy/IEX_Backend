@@ -158,7 +158,7 @@ class Gene {
      */
     mutateSwap(index1, index2) {
         [this.gene[index1], this.gene[index2]] = [this.gene[index2], this.gene[index1]];
-        return this;
+        return new Gene(this.gene, this.length, Gene.calculateFitness(this.gene));
     }
     /**
      * Performs invert mutation, with condition to only apply when result is fitter than input.
