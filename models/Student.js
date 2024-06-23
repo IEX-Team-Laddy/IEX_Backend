@@ -21,6 +21,11 @@ const studentSchema = new mongoose_1.default.Schema({
             type: Number,
         },
     ],
+    feedbackData: [
+        {
+            type: Number,
+        }
+    ],
     allocatedGroupId: {
         type: Number,
     },

@@ -7,12 +7,14 @@ export class Person {
     private readonly preferences: string[]; // Assuming preferences are stored as an array of numbers (IDs)
     private readonly heterogeneous: number[]; // Heterogeneous characteristic values in order as defined in weight.ts
     private readonly homogeneous: number[]; // Same as above but for Homogeneous characteristics
+    private readonly feedback: number[]; // Feedback qn values
 
-    public constructor(pref: string[], hetero: number[], homo: number[], id: string) {
+    public constructor(pref: string[], hetero: number[], homo: number[], feedback: number[], id: string) {
         this.id = id;
         this.preferences = pref;
         this.heterogeneous = hetero;
         this.homogeneous = homo;
+        this.feedback = feedback;
     }
 
     public static calcSimilarity(pair1: Person, pair2: Person): number {
@@ -21,7 +23,15 @@ export class Person {
             similaritySum +=
                 Weight.homoWeights[i] * Math.abs(pair1.homogeneous[i] - pair2.homogeneous[i]);
         }
-        return similaritySum / Weight.homoWeightSum;
+        similaritySum += Weight.COHESIVENESS * Person.getCohesiveness(pair1, pair2)
+        return similaritySum / (Weight.homoWeightSum + Weight.COHESIVENESS);
+    }
+
+    public static getCohesiveness(pair1: Person, pair2: Person): number {
+        let forwardRelation = pair1.feedback[0] == pair2.feedback[1] ? 0 : 1;
+        let backwardRelation = pair2.feedback[0] == pair1.feedback[1] ? 0 : 1;
+        let sum = forwardRelation + backwardRelation;
+        return sum / 2;
     }
 
     public static calcDifference(pair1: Person, pair2: Person): number {

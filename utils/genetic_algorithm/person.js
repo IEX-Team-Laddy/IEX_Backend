@@ -31,11 +31,12 @@ exports.Person = void 0;
 const Weight = __importStar(require("./weight"));
 const gene_1 = __importDefault(require("./gene"));
 class Person {
-    constructor(pref, hetero, homo, id) {
+    constructor(pref, hetero, homo, feedback, id) {
         this.id = id;
         this.preferences = pref;
         this.heterogeneous = hetero;
         this.homogeneous = homo;
+        this.feedback = feedback;
     }
     static calcSimilarity(pair1, pair2) {
         let similaritySum = 0;
@@ -43,7 +44,14 @@ class Person {
             similaritySum +=
                 Weight.homoWeights[i] * Math.abs(pair1.homogeneous[i] - pair2.homogeneous[i]);
         }
-        return similaritySum / Weight.homoWeightSum;
+        similaritySum += Weight.COHESIVENESS * Person.getCohesiveness(pair1, pair2);
+        return similaritySum / (Weight.homoWeightSum + Weight.COHESIVENESS);
+    }
+    static getCohesiveness(pair1, pair2) {
+        let forwardRelation = pair1.feedback[0] == pair2.feedback[1] ? 0 : 1;
+        let backwardRelation = pair2.feedback[0] == pair1.feedback[1] ? 0 : 1;
+        let sum = forwardRelation + backwardRelation;
+        return sum / 2;
     }
     static calcDifference(pair1, pair2) {
         let differenceSum = 0;

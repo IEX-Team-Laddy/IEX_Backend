@@ -51,18 +51,27 @@ class Gene {
         aggregate.forEach((person) => Gene.aggregatedPersons.add(person));
         distribute.forEach((person) => Gene.distributedPersons.add(person));
         // Set mean value of population for each hetero/homo characteristic
+        // Also calculates the meanCohesion between all possible student pairs
         Gene.meanHetero = new Array(Weight.HETERO_TOTAL_COUNT).fill(0);
         Gene.meanHomo = new Array(Weight.HOMO_TOTAL_COUNT).fill(0);
-        Gene.baseGene.forEach((person) => {
-            const hetero = person.getHeterogeneous();
-            const homo = person.getHomogeneous();
+        let pairCount = 0;
+        let totalCohesion = 0;
+        for (let i = 0; i < geneLength; i++) {
+            const hetero = Gene.baseGene[i].getHeterogeneous();
+            const homo = Gene.baseGene[i].getHomogeneous();
             hetero.forEach((value, index) => {
                 Gene.meanHetero[index] += value / geneLength;
             });
             homo.forEach((value, index) => {
                 Gene.meanHomo[index] += value / geneLength;
             });
-        });
+            for (let j = i + 1; j < geneLength; j++) {
+                pairCount++;
+                totalCohesion += person_1.Person.getCohesiveness(Gene.baseGene[i], Gene.baseGene[j]);
+            }
+        }
+        ;
+        Gene.meanCohesion = totalCohesion / pairCount;
         // Store index of 1st member of each group within a gene (for group based calculations, difference in size between any 2 groups <= 1)
         Gene.groupIndex = new Array(groupNo).fill(0).map((_, i) => {
             const remainder = geneLength % groupNo;
@@ -111,6 +120,8 @@ class Gene {
             // For fBal calculation, calculate mean value of each attribute for each group member
             const groupMeanHetero = new Array(Weight.HETERO_TOTAL_COUNT).fill(0);
             const groupMeanHomo = new Array(Weight.HOMO_TOTAL_COUNT).fill(0);
+            let groupMeanCohesion = 0; // For feedback qns
+            let pairCount = 0;
             for (let j = firstMem; j <= lastMem; j++) {
                 const hetero = gene[j].getHeterogeneous();
                 const homo = gene[j].getHomogeneous();
@@ -120,13 +131,21 @@ class Gene {
                 for (let k = 0; k < Weight.HOMO_TOTAL_COUNT; k++) {
                     groupMeanHomo[k] += homo[k] / gene.length;
                 }
+                for (let k = j + i; k <= lastMem; k++) {
+                    pairCount++;
+                    groupMeanCohesion += person_1.Person.getCohesiveness(gene[j], gene[k]);
+                }
             }
+            groupMeanCohesion /= pairCount;
+            // Summing up for fBal
             for (let j = 0; j < Weight.HETERO_TOTAL_COUNT; j++) {
                 fBal += Math.pow(groupMeanHetero[j] - this.meanHetero[j], 2);
             }
             for (let j = 0; j < Weight.HOMO_TOTAL_COUNT; j++) {
                 fBal += Math.pow(groupMeanHomo[j] - this.meanHomo[j], 2);
             }
+            // For feedback qns
+            fBal += Math.pow(groupMeanCohesion - this.meanCohesion, 2);
         }
         const fMix = fHetero * Weight.WEIGHT_HETEROGENEOUS + fHomo * Weight.WEIGHT_HOMOGENEOUS;
         // Fitness = 1 / F, hence numerator & denominator inverted

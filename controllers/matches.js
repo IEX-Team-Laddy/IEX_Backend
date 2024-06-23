@@ -9,10 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = matches;
 const Class_1 = require("../models/Class");
 function matches(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            //Extract class name from request body (ex: ["NPS2001A"])
             console.log(req.body[0]);
             const className = req.body[0];
             const _class = yield Class_1.ClassModel.findOne({
@@ -29,4 +31,3 @@ function matches(req, res) {
         }
     });
 }
-exports.default = matches;

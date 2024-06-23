@@ -28,9 +28,11 @@ export default async function invokeallocation(req: Request, res: Response): Pro
             const idArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.studentId)) || [];
             const homoDataArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.homoData || [])) || [];
             const heteroDataArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.heteroData || [])) || [];
+            const feedbackDataArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.feedbackData || [])) || [];
+
 
             if (classData.currentSubmittedCount === classData.totalStudentCount) {
-                const groupings = Main.main(idArray, homoDataArray, heteroDataArray);
+                const groupings = Main.main(idArray, homoDataArray, heteroDataArray, feedbackDataArray);
                 // Save the groupings
                 classData.groupings = groupings;
                 await classData.save();

@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = invokeallocation;
 const Class_1 = require("../models/Class");
 const main_1 = require("../utils/genetic_algorithm/main");
 //Check if the algorithm has published the final groupings
@@ -33,8 +34,9 @@ function invokeallocation(req, res) {
                 const idArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.studentId)) || [];
                 const homoDataArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.homoData || [])) || [];
                 const heteroDataArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.heteroData || [])) || [];
+                const feedbackDataArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.feedbackData || [])) || [];
                 if (classData.currentSubmittedCount === classData.totalStudentCount) {
-                    const groupings = main_1.Main.main(idArray, homoDataArray, heteroDataArray);
+                    const groupings = main_1.Main.main(idArray, homoDataArray, heteroDataArray, feedbackDataArray);
                     // Save the groupings
                     classData.groupings = groupings;
                     yield classData.save();
@@ -52,4 +54,3 @@ function invokeallocation(req, res) {
         }
     });
 }
-exports.default = invokeallocation;

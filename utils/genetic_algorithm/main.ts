@@ -13,7 +13,6 @@ export class Main {
     static GENE_LENGTH = parseInt(process.env.TOTALSTUDENTCOUNT ?? "20");
     static GROUP_NUMBER = parseInt(process.env.NUMBEROFGROUPS ?? "4");
     static GENERATION_COUNT = 1000;
-    // static FITNESS_LIMIT = 2000;
     static GENERATION_GAP = 0.9;
     static OFFSPRING_COUNT = Main.getOffspringCount();
     static CROSSOVER_PROBABILITY = 0.9;
@@ -27,7 +26,8 @@ export class Main {
     static createCustomGene(
         idArray: string[],
         homoDataArray: number[][],
-        heteroDataArray: number[][]
+        heteroDataArray: number[][],
+        feedbackDataArray: number[][] // Stores results for questions on feedback giving/receiving preference
     ): Person[] {
         const custom: Person[] = new Array(Main.GENE_LENGTH);
 
@@ -38,6 +38,7 @@ export class Main {
                 [], // Preference
                 heteroDataArray[i], // Hetero, in order as defined in weight.ts
                 homoDataArray[i], // Homo, in order as defined in weight.ts,
+                feedbackDataArray[i],
                 idArray[i]
             );
         }
@@ -47,13 +48,14 @@ export class Main {
     static main(
         idArray: string[],
         homoDataArray: number[][],
-        heteroDataArray: number[][]
+        heteroDataArray: number[][],
+        feedbackDataArray: number[][]
     ): string[][] {
         const population = Population.initialise(
             Main.GENE_LENGTH,
             Main.POPULATION_SIZE,
             Main.GROUP_NUMBER,
-            Main.createCustomGene(idArray, homoDataArray, heteroDataArray),
+            Main.createCustomGene(idArray, homoDataArray, heteroDataArray, feedbackDataArray),
             [], // Aggregate IDs
             [] // Distribute IDs
         );

@@ -25,7 +25,7 @@ const matches_1 = __importDefault(require("./controllers/matches"));
 dotenv_1.default.config();
 // This function sets up all the middleware for the app
 function setupMiddleware(app) {
-    app.use((0, cors_1.default)({ origin: process.env.REACT_APP_URL }));
+    app.use((0, cors_1.default)({ origin: "*" }));
     app.use((0, helmet_1.default)());
     app.use(helmet_1.default.crossOriginResourcePolicy({ policy: "cross-origin" }));
     app.use((0, morgan_1.default)("common"));
@@ -37,7 +37,6 @@ function setupRoutes(app) {
     //Sending over the questionaire data
     app.post("/questiondata", questiondata_1.default);
     //Probably a pulse check to see if the algorithm has published
-    //Will return false until the data is ready
     app.get("/invokeallocation/:className", invokeallocation_1.default);
     //Return the matches to the frontend
     app.post("/matches", matches_1.default);
