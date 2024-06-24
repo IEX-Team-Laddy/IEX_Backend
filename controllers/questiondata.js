@@ -33,6 +33,7 @@ function handleQuestionData(req, res) {
             // const major: String = arr[3]; // TBC
             const homoData = arr[4];
             const heteroData = arr[5];
+            const feedbackData = arr[6]; // New
             // Check if the student exists
             let student = yield Student_1.StudentModel.findOne({ studentId });
             if (!student) {
@@ -41,11 +42,13 @@ function handleQuestionData(req, res) {
                     studentId: studentId,
                     homoData: homoData,
                     heteroData: heteroData,
+                    feedbackData: feedbackData,
                 });
             }
             else {
                 student.homoData = homoData;
                 student.heteroData = heteroData;
+                student.feedbackData = feedbackData;
             }
             yield student.save();
             // Check if the class exists

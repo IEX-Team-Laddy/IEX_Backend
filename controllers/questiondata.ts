@@ -22,6 +22,7 @@ export default async function handleQuestionData(req: Request, res: Response): P
         // const major: String = arr[3]; // TBC
         const homoData: number[] = arr[4];
         const heteroData: number[] = arr[5];
+        const feedbackData: number[] = arr[6]; // New
 
         // Check if the student exists
         let student = await StudentModel.findOne({ studentId });
@@ -31,10 +32,12 @@ export default async function handleQuestionData(req: Request, res: Response): P
                 studentId: studentId,
                 homoData: homoData,
                 heteroData: heteroData,
+                feedbackData: feedbackData,
             });
         } else {
             student.homoData = homoData;
             student.heteroData = heteroData;
+            student.feedbackData = feedbackData;
         }
         await student.save();
 
