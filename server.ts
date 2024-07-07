@@ -23,27 +23,34 @@ function setupMiddleware(app: Express) {
 
 // This function sets up all the routes for the app
 function setupRoutes(app: Express) {
-    //Sending over the questionaire data
+    // Sending over the questionnaire data
     app.post("/questiondata", handleQuestionData);
 
-    //Probably a pulse check to see if the algorithm has published
+    // Invoke the allocation algorithm
     app.get("/invokeallocation/:className", invokeallocation);
 
-    //Return the matches to the frontend
+    // Return the matches to the frontend
     app.post("/matches", matches);
 
-    //Health status checks
+    // Health status checks
     app.get("/", (req: Request, res: Response) => res.send("Server deployed successfully"));
     app.head("/", (req: Request, res: Response) => res.end());
 }
 
+// Function to get the appropriate MongoDB URI based on environment variable
+function getMongoDBUri(): string {
+    const testing = process.env.TESTING?.toLowerCase() === 'true';
+    return testing ? process.env.MONGODB_URI_TEST || '' : process.env.MONGODB_URI || '';
+}
+
 async function connectDatabase() {
     try {
-        if (process.env.MONGODB_URI) {
-            await mongoose.connect(process.env.MONGODB_URI);
+        const mongoUri = getMongoDBUri();
+        if (mongoUri) {
+            await mongoose.connect(mongoUri);
             console.log("MongoDB Connected...");
         } else {
-            throw new Error("MONGODB_URI not set");
+            throw new Error("MongoDB URI not set");
         }
     } catch (error) {
         console.error("Failed to connect to MongoDB ", error);
@@ -57,8 +64,8 @@ async function start() {
     setupRoutes(app);
     await connectDatabase();
 
-    app.listen(process.env.PORT || 3001, () =>
-        console.log(`SERVER STARTED ON ${process.env.REACT_APP_SERVER_URL}`)
+    app.listen(process.env.REACT_APP_SERVER_URL || 3001, () =>
+        console.log(`SERVER STARTED ON ${process.env.REACT_APP_SERVER_URL || 3001}`)
     );
 }
 
