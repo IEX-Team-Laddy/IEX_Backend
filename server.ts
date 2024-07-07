@@ -64,7 +64,7 @@ async function start() {
     setupRoutes(app);
     await connectDatabase();
 
-    app.listen(process.env.REACT_APP_SERVER_URL || 3001, () =>
+    app.listen(process.env.PORT || 3001, () =>
         console.log(`SERVER STARTED ON ${process.env.REACT_APP_SERVER_URL || 3001}`)
     );
 }
