@@ -12,8 +12,6 @@ export const MANAGE_MISTAKE = 1;
 export const MANAGE_CONFLICT = 1;
 
 // Homogeneous characteristic weights
-export const FEEDBACK_GIVE = 1;
-export const FEEDBACK_RECEIVE = 1;
 export const BIRD_OWL = 1;
 export const MEETING_TIME = 1;
 export const DOER_PLANNER = 2;
@@ -28,6 +26,7 @@ export const EXPLORE = 1;
 
 // Weight of feedback qns cohesiveness. Cohesiveness is how well the feedback preferences of 2 people align, and thus is treated as a homogeneous characteristic (See calcSimilarity method in person.ts)
 // Since this characteristic only exists in relation to 2 people, it cannot be stored in a Person object and must be recalculated each time.
+// For feedback qns
 export const COHESIVENESS = 1;
 
 // Must contain all heterogeneous characteristics to be used for fitness calculation
@@ -45,8 +44,6 @@ export const HETERO_TOTAL_COUNT: number = heteroWeights.length;
 
 // Must contain all homogeneous characteristics to be used for fitness calculation
 export const homoWeights: number[] = [
-    FEEDBACK_GIVE,
-    FEEDBACK_RECEIVE,
     BIRD_OWL,
     MEETING_TIME,
     DOER_PLANNER,
