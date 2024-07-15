@@ -2,10 +2,10 @@
 // Weight.ts
 // Psuedo class reference => constants here can be used using `import * as Weight from './Weight';`
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.F_TOTAL_WEIGHT = exports.WEIGHT_PREFERENCE = exports.WEIGHT_DISTRIBUTION = exports.WEIGHT_BALANCE = exports.WEIGHT_MIX = exports.WEIGHT_HOMOGENEOUS = exports.WEIGHT_HETEROGENEOUS = exports.HOMO_TOTAL_COUNT = exports.homoWeightSum = exports.homoWeights = exports.HETERO_TOTAL_COUNT = exports.heteroWeightSum = exports.heteroWeights = exports.COHESIVENESS = exports.EXPLORE = exports.PROJECT_PREF = exports.COMMS_EFFECTIVE_IMPT = exports.MEETING_CONSISTENCY = exports.MEETING_LOCATION = exports.WORK_COMMITMENT = exports.WORK_CONSISTENCY = exports.MANAGE_DEADLINE = exports.DOER_PLANNER = exports.MEETING_TIME = exports.BIRD_OWL = exports.MANAGE_CONFLICT = exports.MANAGE_MISTAKE = exports.COMMS_INITIATE_CONSISTENCY = exports.COMMS_INITIATE_COMFORT = exports.COMMS_STYLE_PREF = exports.ADAPT_COMFORT = exports.MAJOR = exports.GENDER = void 0;
+exports.F_TOTAL_WEIGHT = exports.WEIGHT_PREFERENCE = exports.WEIGHT_DISTRIBUTION = exports.WEIGHT_BALANCE = exports.WEIGHT_MIX = exports.WEIGHT_HOMOGENEOUS = exports.WEIGHT_HETEROGENEOUS = exports.HOMO_TOTAL_COUNT = exports.homoWeightSum = exports.homoWeights = exports.HETERO_TOTAL_COUNT = exports.heteroWeightSum = exports.heteroWeights = exports.COHESIVENESS = exports.EXPLORE = exports.PROJECT_PREF = exports.COMMS_EFFECTIVE_IMPT = exports.MEETING_CONSISTENCY = exports.MEETING_LOCATION = exports.WORK_COMMITMENT = exports.WORK_CONSISTENCY = exports.MANAGE_DEADLINE = exports.DOER_PLANNER = exports.MEETING_TIME = exports.BIRD_OWL = exports.MANAGE_CONFLICT = exports.MANAGE_MISTAKE = exports.COMMS_INITIATE_CONSISTENCY = exports.COMMS_INITIATE_COMFORT = exports.COMMS_STYLE_PREF = exports.ADAPT_COMFORT = exports.GENDER = void 0;
 // Heterogeneous characteristic weights
 exports.GENDER = 1;
-exports.MAJOR = 1;
+//export const MAJOR = 1;
 exports.ADAPT_COMFORT = 1;
 exports.COMMS_STYLE_PREF = 2;
 exports.COMMS_INITIATE_COMFORT = 2;

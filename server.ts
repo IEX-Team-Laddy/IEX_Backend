@@ -27,7 +27,7 @@ function setupRoutes(app: Express) {
     app.post("/questiondata", handleQuestionData);
 
     // Invoke the allocation algorithm
-    app.get("/invokeallocation/:className", invokeallocation);
+    app.get("/invokeallocation/:className/:groupCount", invokeallocation);
 
     // Return the matches to the frontend
     app.post("/matches", matches);

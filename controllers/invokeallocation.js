@@ -21,6 +21,7 @@ function invokeallocation(req, res) {
         try {
             // Retrieve the class name from the request parameters
             const className = req.params.className;
+            const groupCount = Number(req.params.groupCount);
             // Fetch the class data using the className parameter
             const classData = yield Class_1.ClassModel.findOne({ className }).populate("studentList");
             if (!classData) {
@@ -36,7 +37,7 @@ function invokeallocation(req, res) {
                 const heteroDataArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.heteroData || [])) || [];
                 const feedbackDataArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.feedbackData || [])) || [];
                 if (classData.currentSubmittedCount === classData.totalStudentCount) {
-                    const groupings = main_1.Main.main(idArray, homoDataArray, heteroDataArray, feedbackDataArray);
+                    const groupings = main_1.Main.main(idArray, homoDataArray, heteroDataArray, feedbackDataArray, classData.totalStudentCount, groupCount);
                     // Save the groupings
                     classData.groupings = groupings;
                     yield classData.save();

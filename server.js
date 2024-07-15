@@ -34,25 +34,32 @@ function setupMiddleware(app) {
 }
 // This function sets up all the routes for the app
 function setupRoutes(app) {
-    //Sending over the questionaire data
+    // Sending over the questionnaire data
     app.post("/questiondata", questiondata_1.default);
-    //Probably a pulse check to see if the algorithm has published
-    app.get("/invokeallocation/:className", invokeallocation_1.default);
-    //Return the matches to the frontend
+    // Invoke the allocation algorithm
+    app.get("/invokeallocation/:className/:groupCount", invokeallocation_1.default);
+    // Return the matches to the frontend
     app.post("/matches", matches_1.default);
-    //Health status checks
+    // Health status checks
     app.get("/", (req, res) => res.send("Server deployed successfully"));
     app.head("/", (req, res) => res.end());
+}
+// Function to get the appropriate MongoDB URI based on environment variable
+function getMongoDBUri() {
+    var _a;
+    const testing = ((_a = process.env.TESTING) === null || _a === void 0 ? void 0 : _a.toLowerCase()) === 'true';
+    return testing ? process.env.MONGODB_URI_TEST || '' : process.env.MONGODB_URI || '';
 }
 function connectDatabase() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            if (process.env.MONGODB_URI) {
-                yield mongoose_1.default.connect(process.env.MONGODB_URI);
+            const mongoUri = getMongoDBUri();
+            if (mongoUri) {
+                yield mongoose_1.default.connect(mongoUri);
                 console.log("MongoDB Connected...");
             }
             else {
-                throw new Error("MONGODB_URI not set");
+                throw new Error("MongoDB URI not set");
             }
         }
         catch (error) {
@@ -67,7 +74,7 @@ function start() {
         setupMiddleware(app);
         setupRoutes(app);
         yield connectDatabase();
-        app.listen(process.env.PORT || 3001, () => console.log(`SERVER STARTED ON ${process.env.REACT_APP_SERVER_URL}`));
+        app.listen(process.env.PORT || 3001, () => console.log(`SERVER STARTED ON ${process.env.REACT_APP_SERVER_URL || 3001}`));
     });
 }
 start();

@@ -3,7 +3,7 @@
 
 // Heterogeneous characteristic weights
 export const GENDER = 1;
-export const MAJOR = 1;
+//export const MAJOR = 1;
 export const ADAPT_COMFORT = 1;
 export const COMMS_STYLE_PREF = 2;
 export const COMMS_INITIATE_COMFORT = 2;

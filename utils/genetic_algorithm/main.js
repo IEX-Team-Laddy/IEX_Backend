@@ -30,7 +30,9 @@ class Main {
         }
         return custom;
     }
-    static main(idArray, homoDataArray, heteroDataArray, feedbackDataArray) {
+    static main(idArray, homoDataArray, heteroDataArray, feedbackDataArray, geneLength, groupCount) {
+        this.GENE_LENGTH = geneLength;
+        this.GROUP_NUMBER = groupCount;
         const population = population_1.Population.initialise(Main.GENE_LENGTH, Main.POPULATION_SIZE, Main.GROUP_NUMBER, Main.createCustomGene(idArray, homoDataArray, heteroDataArray, feedbackDataArray), [], // Aggregate IDs
         [] // Distribute IDs
         );

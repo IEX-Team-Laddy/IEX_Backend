@@ -49,8 +49,13 @@ export class Main {
         idArray: string[],
         homoDataArray: number[][],
         heteroDataArray: number[][],
-        feedbackDataArray: number[][]
+        feedbackDataArray: number[][],
+        geneLength: number,
+        groupCount: number
     ): string[][] {
+        this.GENE_LENGTH = geneLength;
+        this.GROUP_NUMBER = groupCount;
+
         const population = Population.initialise(
             Main.GENE_LENGTH,
             Main.POPULATION_SIZE,

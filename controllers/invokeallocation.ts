@@ -13,6 +13,7 @@ export default async function invokeallocation(req: Request, res: Response): Pro
     try {
         // Retrieve the class name from the request parameters
         const className = req.params.className;
+        const groupCount = Number(req.params.groupCount);
 
         // Fetch the class data using the className parameter
         const classData = await ClassModel.findOne({ className }).populate("studentList");
@@ -32,7 +33,7 @@ export default async function invokeallocation(req: Request, res: Response): Pro
 
 
             if (classData.currentSubmittedCount === classData.totalStudentCount) {
-                const groupings = Main.main(idArray, homoDataArray, heteroDataArray, feedbackDataArray);
+                const groupings = Main.main(idArray, homoDataArray, heteroDataArray, feedbackDataArray, classData.totalStudentCount, groupCount);
                 // Save the groupings
                 classData.groupings = groupings;
                 await classData.save();
