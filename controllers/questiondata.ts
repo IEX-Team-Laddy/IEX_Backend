@@ -19,10 +19,13 @@ export default async function handleQuestionData(req: Request, res: Response): P
         const studentId: string = arr[1];
 
         // const consent: String = arr[2]; // Ignored on purpose
-        const faculty: string = arr[3];
-        const homoData: number[] = arr[4];
-        const heteroData: number[] = arr[5];
-        const feedbackData: number[] = arr[6];
+        // const major: String = arr[3]; // Ignored on purpose
+        // const secondMajor: String = arr[4]; // Ignored on purpose
+
+        const faculty: string = arr[5];
+        const homoData: number[] = arr[6];
+        const heteroData: number[] = arr[7];
+        const feedbackData: number[] = arr[8];
 
         // Check if the student exists
         let student = await StudentModel.findOne({ studentId });

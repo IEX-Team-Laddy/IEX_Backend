@@ -30,10 +30,12 @@ function handleQuestionData(req, res) {
             const className = arr[0];
             const studentId = arr[1];
             // const consent: String = arr[2]; // Ignored on purpose
-            const faculty = arr[3];
-            const homoData = arr[4];
-            const heteroData = arr[5];
-            const feedbackData = arr[6];
+            // const major: String = arr[3]; // Ignored on purpose
+            // const secondMajor: String = arr[4]; // Ignored on purpose
+            const faculty = arr[5];
+            const homoData = arr[6];
+            const heteroData = arr[7];
+            const feedbackData = arr[8];
             // Check if the student exists
             let student = yield Student_1.StudentModel.findOne({ studentId });
             if (!student) {
