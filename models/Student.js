@@ -26,6 +26,9 @@ const studentSchema = new mongoose_1.default.Schema({
             type: Number,
         }
     ],
+    faculty: {
+        type: String,
+    },
     allocatedGroupId: {
         type: Number,
     },

@@ -31,12 +31,13 @@ exports.Person = void 0;
 const Weight = __importStar(require("./weight"));
 const gene_1 = __importDefault(require("./gene"));
 class Person {
-    constructor(pref, hetero, homo, feedback, id) {
+    constructor(pref, hetero, homo, feedback, id, faculty) {
         this.id = id;
         this.preferences = pref;
         this.heterogeneous = hetero;
         this.homogeneous = homo;
         this.feedback = feedback;
+        this.faculty = faculty;
     }
     static calcSimilarity(pair1, pair2) {
         let similaritySum = 0;
@@ -77,6 +78,29 @@ class Person {
             rValue = 1;
         }
         return rValue;
+    }
+    /**
+     * Takes in array slice of gene (for a single group) and checks if faculty constraint is satisfied.
+     * Constraint: Not more than half the group members can be from the same faculty.
+     */
+    static calcPenalty(group) {
+        const facultyCount = {};
+        for (const person of group) {
+            if (facultyCount[person.faculty]) {
+                facultyCount[person.faculty]++;
+            }
+            else {
+                facultyCount[person.faculty] = 1;
+            }
+        }
+        // If faculty exceeds half group size, give penalty of 100
+        const halfGroupSize = Math.floor(group.length / 2);
+        for (const count of Object.values(facultyCount)) {
+            if (count > halfGroupSize) {
+                return Weight.FITNESS_PENALTY;
+            }
+        }
+        return 0; // No penalty
     }
     getId() {
         return this.id;

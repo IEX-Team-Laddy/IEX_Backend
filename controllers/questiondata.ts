@@ -11,18 +11,18 @@ dotenv.config();
 
 export default async function handleQuestionData(req: Request, res: Response): Promise<void> {
     try {
-        const arr: Array<String & number[]> = req.body;
+        const arr: Array<string & number[]> = req.body;
         console.log(arr);
 
         // Retrieve the data from the request body
-        const className: String = arr[0];
-        const studentId: String = arr[1];
+        const className: string = arr[0];
+        const studentId: string = arr[1];
 
         // const consent: String = arr[2]; // Ignored on purpose
-        // const major: String = arr[3]; // TBC
+        const faculty: string = arr[3];
         const homoData: number[] = arr[4];
         const heteroData: number[] = arr[5];
-        const feedbackData: number[] = arr[6]; // New
+        const feedbackData: number[] = arr[6];
 
         // Check if the student exists
         let student = await StudentModel.findOne({ studentId });
@@ -33,11 +33,13 @@ export default async function handleQuestionData(req: Request, res: Response): P
                 homoData: homoData,
                 heteroData: heteroData,
                 feedbackData: feedbackData,
+                faculty: faculty,
             });
         } else {
             student.homoData = homoData;
             student.heteroData = heteroData;
             student.feedbackData = feedbackData;
+            student.faculty = faculty;
         }
         await student.save();
 

@@ -2,6 +2,7 @@ import * as Weight from "./weight";
 import { Person } from "./person";
 
 export default class Gene {
+    private static enablePenalty: boolean; // Enable penalty for faculty constraint (or however calcPenalty is defined)
     private static baseGene: Person[];
     private static meanHetero: number[]; // Mean of each heterogeneous characteristic of all Persons in gene.
     private static meanHomo: number[]; // Mean of each homogeneous characteristic of all Persons in gene.
@@ -42,9 +43,11 @@ export default class Gene {
         groupNo: number,
         startingGene: Person[],
         aggregate: string[],
-        distribute: string[]
+        distribute: string[],
+        enablePenalty: boolean
     ): void {
         Gene.baseGene = startingGene;
+        Gene.enablePenalty = enablePenalty;
         aggregate.forEach((person) => Gene.aggregatedPersons.add(person));
         distribute.forEach((person) => Gene.distributedPersons.add(person));
 
@@ -105,6 +108,7 @@ export default class Gene {
         let fBal = 0;
         let fPref = 0;
         let fDist = 0;
+        let penalty = 0;
 
         // For each group in a gene
         for (let i = 0; i < this.groupIndex.length; i++) {
@@ -153,6 +157,11 @@ export default class Gene {
             }
             // For feedback qns
             fBal += Math.pow(groupMeanCohesion - this.meanCohesion, 2);
+
+            // Penalty for groups where > 1/2 the group has same faculty
+            if (Gene.enablePenalty) {
+                penalty += Person.calcPenalty(gene.slice(firstMem, lastMem + 1))
+            }
         }
 
         const fMix = fHetero * Weight.WEIGHT_HETEROGENEOUS + fHomo * Weight.WEIGHT_HOMOGENEOUS;
@@ -163,7 +172,8 @@ export default class Gene {
             (fMix * Weight.WEIGHT_MIX +
                 fBal * Weight.WEIGHT_BALANCE +
                 fPref * Weight.WEIGHT_PREFERENCE +
-                fDist * Weight.WEIGHT_DISTRIBUTION)
+                fDist * Weight.WEIGHT_DISTRIBUTION +
+                penalty)
         );
     }
 
@@ -191,8 +201,9 @@ export default class Gene {
      * Performs swap mutation using randomly generated indexes {@param start} and {@param end}.
      */
     public mutateSwap(index1: number, index2: number): Gene {
-        [this.gene[index1], this.gene[index2]] = [this.gene[index2], this.gene[index1]];
-        return new Gene(this.gene, this.length, Gene.calculateFitness(this.gene));
+        const result = this.gene.slice(); // Copy for mutation
+        [result[index1], result[index2]] = [result[index2], result[index1]];
+        return new Gene(result, this.length, Gene.calculateFitness(result));
     }
 
     /**
@@ -223,7 +234,10 @@ export default class Gene {
         return this.gene.map((person) => person.toString()).join(" ");
     }
 
-    // TODO: change output from a console log -> store data in db or smthg
+    /**
+     * Return student groupings, properly formatted
+     * @returns Array of groups, each containing an array of student id's
+     */
     public returnGroup(): Array<Array<string>> {
         let arr = [];
         for (let i = 0; i < Gene.groupIndex.length; i++) {

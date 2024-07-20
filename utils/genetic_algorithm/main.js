@@ -2,7 +2,6 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Main = void 0;
 // Main.ts
@@ -10,32 +9,36 @@ const population_1 = require("./population");
 const stochastic_1 = require("./stochastic");
 const crossover_1 = __importDefault(require("./crossover"));
 const person_1 = require("./person");
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
 class Main {
     static getOffspringCount() {
         const count = Math.floor(Main.POPULATION_SIZE * Main.GENERATION_GAP);
         return count % 2 === 0 ? count : count + 1;
     }
-    static createCustomGene(idArray, homoDataArray, heteroDataArray, feedbackDataArray // Stores results for questions on feedback giving/receiving preference
-    ) {
-        const custom = new Array(Main.GENE_LENGTH);
-        // TODO: Finish iterator for creating Person objects
-        // In the hetero/homo arrays get the data from the user model. Possibly can first use the Class model to get all Users in the class, then use a foreach loop instead to iterate.
-        for (let i = 0; i < Main.GENE_LENGTH; i++) {
-            custom[i] = new person_1.Person([], // Preference
-            heteroDataArray[i], // Hetero, in order as defined in weight.ts
-            homoDataArray[i], // Homo, in order as defined in weight.ts,
-            feedbackDataArray[i], idArray[i]);
-        }
-        return custom;
-    }
-    static main(idArray, homoDataArray, heteroDataArray, feedbackDataArray, geneLength, groupCount) {
+    /**
+     * Main method to run the genetic algorithm
+     * @param idArray  Array of student IDs
+     * @param homoDataArray Array of homoData for each student, in order as defined in weight.ts
+     * @param heteroDataArray Array of heteroData for each student, in order as defined in weight.ts
+     * @param feedbackDataArray Array of feedbackData (feedback give/receive preference) for each student
+     * @param facultyArray Faculties for each student
+     * @param enablePenalty Whether to enable penalty system for fitness calculation
+     * @param geneLength Number of students
+     * @param groupCount Number of groups to form (auto balances group sizes, remainder split evenly)
+     * @returns
+     */
+    static main(idArray, homoDataArray, heteroDataArray, feedbackDataArray, facultyArray, enablePenalty, geneLength, groupCount) {
         this.GENE_LENGTH = geneLength;
         this.GROUP_NUMBER = groupCount;
-        const population = population_1.Population.initialise(Main.GENE_LENGTH, Main.POPULATION_SIZE, Main.GROUP_NUMBER, Main.createCustomGene(idArray, homoDataArray, heteroDataArray, feedbackDataArray), [], // Aggregate IDs
-        [] // Distribute IDs
-        );
+        // Create starting gene
+        const custom = new Array(Main.GENE_LENGTH);
+        for (let i = 0; i < Main.GENE_LENGTH; i++) {
+            custom[i] = new person_1.Person([], // Personal preference for each student, not used for now
+            heteroDataArray[i], homoDataArray[i], feedbackDataArray[i], idArray[i], facultyArray[i]);
+        }
+        // Initialise population for iterations
+        const population = population_1.Population.initialise(Main.GENE_LENGTH, Main.POPULATION_SIZE, Main.GROUP_NUMBER, custom, [], // Aggregate IDs
+        [], // Distribute IDs
+        enablePenalty);
         population.printPopulation();
         console.log("\n");
         // Generation loop.
@@ -78,9 +81,9 @@ class Main {
     }
 }
 exports.Main = Main;
-Main.POPULATION_SIZE = 50;
-Main.GENE_LENGTH = parseInt((_a = process.env.TOTALSTUDENTCOUNT) !== null && _a !== void 0 ? _a : "20");
-Main.GROUP_NUMBER = parseInt((_b = process.env.NUMBEROFGROUPS) !== null && _b !== void 0 ? _b : "4");
+Main.POPULATION_SIZE = 50; // number of genes in a population
+Main.GENE_LENGTH = 20; // default, changed in main()
+Main.GROUP_NUMBER = 4; // default, changed in main()
 Main.GENERATION_COUNT = 1000;
 Main.GENERATION_GAP = 0.9;
 Main.OFFSPRING_COUNT = Main.getOffspringCount();

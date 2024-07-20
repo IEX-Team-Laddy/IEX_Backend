@@ -21,9 +21,10 @@ export class Population {
         groupNo: number,
         customGene: Person[],
         aggregate: string[],
-        distribute: string[]
+        distribute: string[],
+        enablePenalty: boolean
     ): Population {
-        Gene.setBaseInfo(geneLength, groupNo, customGene, aggregate, distribute);
+        Gene.setBaseInfo(geneLength, groupNo, customGene, aggregate, distribute, enablePenalty);
         return new Population(geneLength, geneCount);
     }
 

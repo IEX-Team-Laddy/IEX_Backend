@@ -24,6 +24,9 @@ export const COMMS_EFFECTIVE_IMPT = 1;
 export const PROJECT_PREF = 1;
 export const EXPLORE = 1;
 
+// PENALTY
+export const FITNESS_PENALTY = 1000;
+
 // Weight of feedback qns cohesiveness. Cohesiveness is how well the feedback preferences of 2 people align, and thus is treated as a homogeneous characteristic (See calcSimilarity method in person.ts)
 // Since this characteristic only exists in relation to 2 people, it cannot be stored in a Person object and must be recalculated each time.
 // For feedback qns

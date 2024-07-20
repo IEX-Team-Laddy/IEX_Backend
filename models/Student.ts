@@ -5,6 +5,7 @@ interface IStudent extends Document {
     homoData?: number[];
     heteroData?: number[];
     feedbackData?: number[];
+    faculty?: string;
     allocatedGroupId?: number;
 }
 
@@ -29,6 +30,9 @@ const studentSchema: Schema = new mongoose.Schema({
             type: Number,
         }
     ],
+    faculty: {
+        type: String,
+    },
     allocatedGroupId: {
         type: Number,
     },

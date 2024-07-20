@@ -8,13 +8,15 @@ export class Person {
     private readonly heterogeneous: number[]; // Heterogeneous characteristic values in order as defined in weight.ts
     private readonly homogeneous: number[]; // Same as above but for Homogeneous characteristics
     private readonly feedback: number[]; // Feedback qn values
+    private readonly faculty: string;
 
-    public constructor(pref: string[], hetero: number[], homo: number[], feedback: number[], id: string) {
+    public constructor(pref: string[], hetero: number[], homo: number[], feedback: number[], id: string, faculty: string) {
         this.id = id;
         this.preferences = pref;
         this.heterogeneous = hetero;
         this.homogeneous = homo;
         this.feedback = feedback;
+        this.faculty = faculty;
     }
 
     public static calcSimilarity(pair1: Person, pair2: Person): number {
@@ -61,6 +63,29 @@ export class Person {
             rValue = 1;
         }
         return rValue;
+    }
+
+    /**
+     * Takes in array slice of gene (for a single group) and checks if faculty constraint is satisfied.
+     * Constraint: Not more than half the group members can be from the same faculty.
+     */
+    public static calcPenalty(group: Person[]): number {
+        const facultyCount: { [key: string]: number } = {};
+        for (const person of group) {
+            if (facultyCount[person.faculty]) {
+                facultyCount[person.faculty]++;
+            } else {
+                facultyCount[person.faculty] = 1;
+            }
+        }
+        // If faculty exceeds half group size, give penalty of 100
+        const halfGroupSize = Math.floor(group.length / 2);
+        for (const count of Object.values(facultyCount)) {
+            if (count > halfGroupSize) {
+                return Weight.FITNESS_PENALTY;
+            }
+        }
+        return 0; // No penalty
     }
 
     public getId(): string {

@@ -46,8 +46,9 @@ class Gene {
      * @param aggregate Persons (id's) to be grouped together
      * @param distribute Persons (id's) to be separated from each other
      */
-    static setBaseInfo(geneLength, groupNo, startingGene, aggregate, distribute) {
+    static setBaseInfo(geneLength, groupNo, startingGene, aggregate, distribute, enablePenalty) {
         Gene.baseGene = startingGene;
+        Gene.enablePenalty = enablePenalty;
         aggregate.forEach((person) => Gene.aggregatedPersons.add(person));
         distribute.forEach((person) => Gene.distributedPersons.add(person));
         // Set mean value of population for each hetero/homo characteristic
@@ -104,6 +105,7 @@ class Gene {
         let fBal = 0;
         let fPref = 0;
         let fDist = 0;
+        let penalty = 0;
         // For each group in a gene
         for (let i = 0; i < this.groupIndex.length; i++) {
             const firstMem = this.groupIndex[i];
@@ -146,6 +148,10 @@ class Gene {
             }
             // For feedback qns
             fBal += Math.pow(groupMeanCohesion - this.meanCohesion, 2);
+            // Penalty for groups where > 1/2 the group has same faculty
+            if (Gene.enablePenalty) {
+                penalty += person_1.Person.calcPenalty(gene.slice(firstMem, lastMem + 1));
+            }
         }
         const fMix = fHetero * Weight.WEIGHT_HETEROGENEOUS + fHomo * Weight.WEIGHT_HOMOGENEOUS;
         // Fitness = 1 / F, hence numerator & denominator inverted
@@ -153,7 +159,8 @@ class Gene {
             (fMix * Weight.WEIGHT_MIX +
                 fBal * Weight.WEIGHT_BALANCE +
                 fPref * Weight.WEIGHT_PREFERENCE +
-                fDist * Weight.WEIGHT_DISTRIBUTION));
+                fDist * Weight.WEIGHT_DISTRIBUTION +
+                penalty));
     }
     crossParent(parent2, start, end) {
         const child = this.gene.slice(); // shallow copy
@@ -176,8 +183,9 @@ class Gene {
      * Performs swap mutation using randomly generated indexes {@param start} and {@param end}.
      */
     mutateSwap(index1, index2) {
-        [this.gene[index1], this.gene[index2]] = [this.gene[index2], this.gene[index1]];
-        return new Gene(this.gene, this.length, Gene.calculateFitness(this.gene));
+        const result = this.gene.slice(); // Copy for mutation
+        [result[index1], result[index2]] = [result[index2], result[index1]];
+        return new Gene(result, this.length, Gene.calculateFitness(result));
     }
     /**
      * Performs invert mutation, with condition to only apply when result is fitter than input.
@@ -203,7 +211,10 @@ class Gene {
     toString() {
         return this.gene.map((person) => person.toString()).join(" ");
     }
-    // TODO: change output from a console log -> store data in db or smthg
+    /**
+     * Return student groupings, properly formatted
+     * @returns Array of groups, each containing an array of student id's
+     */
     returnGroup() {
         let arr = [];
         for (let i = 0; i < Gene.groupIndex.length; i++) {

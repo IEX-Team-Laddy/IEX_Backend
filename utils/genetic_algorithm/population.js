@@ -15,8 +15,8 @@ class Population {
             this.genes.push(new gene_1.default(geneLength));
         }
     }
-    static initialise(geneLength, geneCount, groupNo, customGene, aggregate, distribute) {
-        gene_1.default.setBaseInfo(geneLength, groupNo, customGene, aggregate, distribute);
+    static initialise(geneLength, geneCount, groupNo, customGene, aggregate, distribute, enablePenalty) {
+        gene_1.default.setBaseInfo(geneLength, groupNo, customGene, aggregate, distribute, enablePenalty);
         return new Population(geneLength, geneCount);
     }
     getTotalFitness() {

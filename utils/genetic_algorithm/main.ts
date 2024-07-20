@@ -4,14 +4,11 @@ import { Stochastic } from "./stochastic";
 import Crossover from "./crossover";
 import Gene from "./gene";
 import { Person } from "./person";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 export class Main {
-    static POPULATION_SIZE = 50;
-    static GENE_LENGTH = parseInt(process.env.TOTALSTUDENTCOUNT ?? "20");
-    static GROUP_NUMBER = parseInt(process.env.NUMBEROFGROUPS ?? "4");
+    static POPULATION_SIZE = 50; // number of genes in a population
+    static GENE_LENGTH = 20; // default, changed in main()
+    static GROUP_NUMBER = 4; // default, changed in main()
     static GENERATION_COUNT = 1000;
     static GENERATION_GAP = 0.9;
     static OFFSPRING_COUNT = Main.getOffspringCount();
@@ -23,46 +20,53 @@ export class Main {
         return count % 2 === 0 ? count : count + 1;
     }
 
-    static createCustomGene(
-        idArray: string[],
-        homoDataArray: number[][],
-        heteroDataArray: number[][],
-        feedbackDataArray: number[][] // Stores results for questions on feedback giving/receiving preference
-    ): Person[] {
-        const custom: Person[] = new Array(Main.GENE_LENGTH);
-
-        // TODO: Finish iterator for creating Person objects
-        // In the hetero/homo arrays get the data from the user model. Possibly can first use the Class model to get all Users in the class, then use a foreach loop instead to iterate.
-        for (let i = 0; i < Main.GENE_LENGTH; i++) {
-            custom[i] = new Person(
-                [], // Preference
-                heteroDataArray[i], // Hetero, in order as defined in weight.ts
-                homoDataArray[i], // Homo, in order as defined in weight.ts,
-                feedbackDataArray[i],
-                idArray[i]
-            );
-        }
-        return custom;
-    }
-
+    /**
+     * Main method to run the genetic algorithm
+     * @param idArray  Array of student IDs
+     * @param homoDataArray Array of homoData for each student, in order as defined in weight.ts
+     * @param heteroDataArray Array of heteroData for each student, in order as defined in weight.ts
+     * @param feedbackDataArray Array of feedbackData (feedback give/receive preference) for each student
+     * @param facultyArray Faculties for each student
+     * @param enablePenalty Whether to enable penalty system for fitness calculation
+     * @param geneLength Number of students
+     * @param groupCount Number of groups to form (auto balances group sizes, remainder split evenly)
+     * @returns 
+     */
     static main(
         idArray: string[],
         homoDataArray: number[][],
         heteroDataArray: number[][],
         feedbackDataArray: number[][],
+        facultyArray: string[],
+        enablePenalty: boolean,
         geneLength: number,
         groupCount: number
     ): string[][] {
         this.GENE_LENGTH = geneLength;
         this.GROUP_NUMBER = groupCount;
 
+        // Create starting gene
+        const custom: Person[] = new Array(Main.GENE_LENGTH);
+        for (let i = 0; i < Main.GENE_LENGTH; i++) {
+            custom[i] = new Person(
+                [], // Personal preference for each student, not used for now
+                heteroDataArray[i],
+                homoDataArray[i],
+                feedbackDataArray[i],
+                idArray[i],
+                facultyArray[i]
+            );
+        }
+
+        // Initialise population for iterations
         const population = Population.initialise(
             Main.GENE_LENGTH,
             Main.POPULATION_SIZE,
             Main.GROUP_NUMBER,
-            Main.createCustomGene(idArray, homoDataArray, heteroDataArray, feedbackDataArray),
+            custom,
             [], // Aggregate IDs
-            [] // Distribute IDs
+            [], // Distribute IDs
+            enablePenalty
         );
 
         population.printPopulation();
