@@ -33,7 +33,7 @@ export default async function invokeallocation(req: Request, res: Response): Pro
             const facultyDataArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.faculty || "")) || [];
 
             if (classData.currentSubmittedCount === classData.totalStudentCount) {
-                const groupings = Main.main(idArray, homoDataArray, heteroDataArray, feedbackDataArray, facultyDataArray, true, classData.totalStudentCount, groupCount);
+                const groupings = Main.main(idArray, homoDataArray, heteroDataArray, feedbackDataArray, facultyDataArray, false, classData.totalStudentCount, groupCount);
                 // Save the groupings
                 classData.groupings = groupings;
                 await classData.save();

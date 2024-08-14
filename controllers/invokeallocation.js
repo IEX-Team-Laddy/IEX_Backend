@@ -38,7 +38,7 @@ function invokeallocation(req, res) {
                 const feedbackDataArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.feedbackData || [])) || [];
                 const facultyDataArray = (studentList === null || studentList === void 0 ? void 0 : studentList.map((student) => student.faculty || "")) || [];
                 if (classData.currentSubmittedCount === classData.totalStudentCount) {
-                    const groupings = main_1.Main.main(idArray, homoDataArray, heteroDataArray, feedbackDataArray, facultyDataArray, true, classData.totalStudentCount, groupCount);
+                    const groupings = main_1.Main.main(idArray, homoDataArray, heteroDataArray, feedbackDataArray, facultyDataArray, false, classData.totalStudentCount, groupCount);
                     // Save the groupings
                     classData.groupings = groupings;
                     yield classData.save();
